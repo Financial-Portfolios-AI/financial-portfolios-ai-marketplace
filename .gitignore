@@ -1,0 +1,15 @@
+# Secrets / local env
+.env
+.env.*
+*.local
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Node / tooling (if added later)
+node_modules/
+dist/
+.cache/

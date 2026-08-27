@@ -1,0 +1,23 @@
+{
+  "name": "financial-portfolios-ai",
+  "owner": {
+    "name": "Financial Portfolios AI",
+    "url": "https://financial-portfolios.ai"
+  },
+  "metadata": {
+    "description": "Agentic extensions for Financial Portfolios AI subscribers — interact with your model portfolios, run analysis and visualizations, and prepare broker orders, all from an LLM client via MCP.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "fpai-portfolio",
+      "source": "./plugins/fpai-portfolio",
+      "description": "Connect to your Financial Portfolios AI account (MCP) and explore, analyze and visualize your model portfolios: holdings, allocations, history, performance, winners/losers."
+    },
+    {
+      "name": "fpai-broker",
+      "source": "./plugins/fpai-broker",
+      "description": "Convert a Financial Portfolios AI model portfolio into reviewable order tickets and hand them to a brokerage MCP (Interactive Brokers, Robinhood, Alpaca, …) — propose → confirm, never auto-execute."
+    }
+  ]
+}
