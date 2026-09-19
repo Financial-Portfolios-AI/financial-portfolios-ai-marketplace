@@ -1,7 +1,8 @@
 # Financial Portfolios AI
 
-> **Preview.** This extension connects to the **dev** deployment
-> (`https://dev.financial-portfolios.ai`); the production domain does not serve the MCP endpoint yet.
+> **Preview.** This extension connects to the **dev** deployment; the production domain does not serve the MCP endpoint yet.
+
+Connects to `https://dev.financial-portfolios.ai/mcp`.
 
 Systematic, AI-driven model portfolios. This extension connects Gemini CLI to the Financial
 Portfolios AI MCP server so you can inspect published model portfolios, see how they change,
