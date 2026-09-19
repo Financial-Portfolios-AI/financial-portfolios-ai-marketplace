@@ -48,10 +48,10 @@ cross-portfolio breadth board and the access panel, whose results are computed s
 ## Which deployment these point at
 
 > **The production domain does not serve the MCP endpoint yet.** `https://financial-portfolios.ai/mcp`
-> currently returns `404`, so the Gemini extension is published against the **dev** deployment,
-> `https://dev.financial-portfolios.ai/mcp`, which answers correctly. The Claude Code plugin still
-> defaults to the production URL and needs `FPAI_MCP_URL` set to the dev host until production is live.
-> Both will move to production once it is serving.
+> currently returns `404`, while `https://dev.financial-portfolios.ai/mcp` answers correctly. Both the
+> Gemini extension and the `fpai-portfolio` plugin therefore default to the **dev** deployment, so an
+> install works out of the box. Override with `FPAI_MCP_URL` (plugin) or by editing
+> [`gemini-extension.json`](gemini-extension.json), and both move to production once it is serving.
 
 ## Authentication
 
@@ -59,7 +59,8 @@ The `fpai-portfolio` plugin bundles the MCP connection (`.mcp.json`). Provide yo
 
 - `FPAI_API_TOKEN` — a personal API token (`aqat_v1_…`) from **API Access** on the portal, **or**
 - use the **OAuth** connector flow (recommended for directory clients) — the plugin points at
-  `https://financial-portfolios.ai/mcp`, whose OAuth authorization server handles sign-in and consent.
+  `https://dev.financial-portfolios.ai/mcp`, whose OAuth authorization server handles sign-in and
+  consent. A tokenless request there answers `401` with the RFC 9728 challenge that starts the flow.
 - `FPAI_MCP_URL` — override the server URL (e.g. a staging/self-hosted MCP).
 
 Access is always scoped to your active subscriptions and can be revoked any time from API Access.
