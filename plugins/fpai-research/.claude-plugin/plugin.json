@@ -1,5 +1,6 @@
 {
   "name": "fpai-research",
+  "displayName": "FP.ai Research",
   "description": "Put the companies in your Financial Portfolios AI model portfolios in context: news, filings and fundamentals from whatever market-data MCP you have connected, joined to the holdings and the portal's own research.",
   "version": "0.1.0",
   "author": {

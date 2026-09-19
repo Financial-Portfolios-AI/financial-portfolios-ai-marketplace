@@ -5,24 +5,27 @@
     "url": "https://financial-portfolios.ai"
   },
   "metadata": {
-    "description": "Agentic extensions for Financial Portfolios AI subscribers — interact with your model portfolios, run analysis and visualizations, and prepare broker orders, all from an LLM client via MCP.",
+    "description": "FP.ai agentic extensions for Financial Portfolios AI subscribers — interact with your model portfolios, run analysis and visualizations, and prepare broker orders, all from an LLM client via MCP.",
     "version": "0.1.0"
   },
   "plugins": [
     {
       "name": "fpai-portfolio",
       "source": "./plugins/fpai-portfolio",
-      "description": "Connect to your Financial Portfolios AI account (MCP) and explore, analyze and visualize your model portfolios: holdings, allocations, history, performance, winners/losers."
+      "description": "Connect to your Financial Portfolios AI account (MCP) and explore, analyze and visualize your model portfolios: holdings, allocations, history, performance, winners/losers.",
+      "displayName": "FP.ai Portfolio"
     },
     {
       "name": "fpai-research",
       "source": "./plugins/fpai-research",
-      "description": "Put the companies in your model portfolios in context — news, filings and fundamentals from a connected market-data MCP, joined to the holdings and the portal's own research, with every outside fact attributed. Requires fpai-portfolio for the MCP connection."
+      "description": "Put the companies in your model portfolios in context — news, filings and fundamentals from a connected market-data MCP, joined to the holdings and the portal's own research, with every outside fact attributed. Requires fpai-portfolio for the MCP connection.",
+      "displayName": "FP.ai Research"
     },
     {
       "name": "fpai-broker",
       "source": "./plugins/fpai-broker",
-      "description": "Convert a Financial Portfolios AI model portfolio into reviewable order tickets and hand them to a brokerage MCP (Interactive Brokers, Robinhood, Alpaca, …) — propose → confirm, never auto-execute."
+      "description": "Convert a Financial Portfolios AI model portfolio into reviewable order tickets and hand them to a brokerage MCP (Interactive Brokers, Robinhood, Alpaca, …) — propose → confirm, never auto-execute.",
+      "displayName": "FP.ai Broker"
     }
   ]
 }

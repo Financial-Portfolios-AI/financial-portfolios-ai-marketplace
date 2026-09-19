@@ -1,5 +1,6 @@
 {
   "name": "fpai-broker",
+  "displayName": "FP.ai Broker",
   "description": "Convert a Financial Portfolios AI model portfolio into reviewable order tickets and hand them to a brokerage MCP (Interactive Brokers, Robinhood, Alpaca, …). Propose → confirm → the user executes; never auto-trades.",
   "version": "0.1.0",
   "author": {
@@ -8,5 +9,13 @@
   },
   "homepage": "https://financial-portfolios.ai/agentic",
   "license": "MIT",
-  "keywords": ["finance", "brokerage", "orders", "ibkr", "robinhood", "alpaca", "mcp"]
+  "keywords": [
+    "finance",
+    "brokerage",
+    "orders",
+    "ibkr",
+    "robinhood",
+    "alpaca",
+    "mcp"
+  ]
 }

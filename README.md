@@ -33,6 +33,30 @@ Those come from connectors you add, and the assistant joins them.
 the third. The `connect-your-stack` skill explains which to add for what you want to do — ask the
 assistant "what else should I connect?".
 
+## Connect the MCP server
+
+One click in editors that support an install link:
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=financial-portfolios-ai&config=eyJ1cmwiOiJodHRwczovL2Rldi5maW5hbmNpYWwtcG9ydGZvbGlvcy5haS9tY3AifQ%3D%3D)
+[![Add to VS Code](https://img.shields.io/badge/VS_Code-Add_MCP_server-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D)
+[![Add to VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Add_MCP_server-24bfa5?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D&quality=insiders)
+
+These add the connector only. Claude Code users want the plugins below, which bundle the
+connection plus commands and skills.
+
+> The buttons point at the **dev** deployment, because `https://financial-portfolios.ai/mcp`
+> returns `404` today. See [Which deployment these point at](#which-deployment-these-point-at).
+
+Anything else — Claude Desktop, ChatGPT, Windsurf, Zed, LM Studio — has no install link, so add the
+server URL by hand:
+
+```
+https://dev.financial-portfolios.ai/mcp
+```
+
+Sign-in is OAuth 2.1, so there is no key to paste. Command-line clients that cannot run the
+sign-in use a personal token in an `X-API-Key` header instead.
+
 ## Install (Claude Code)
 
 ```bash
