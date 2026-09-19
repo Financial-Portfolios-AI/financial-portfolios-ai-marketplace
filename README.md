@@ -1,6 +1,6 @@
 # Financial Portfolios AI — Agentic Marketplace
 
-A **Claude Code plugin marketplace** of agentic extensions for
+A **Claude Code plugin marketplace** and a **Gemini CLI extension** for
 [Financial Portfolios AI](https://financial-portfolios.ai) subscribers. Install a plugin and your LLM
 client can talk to your model portfolios over the [MCP](https://modelcontextprotocol.io) server: explore
 holdings, run analysis and visualizations, and prepare broker orders — all with your data, scoped to your
@@ -27,8 +27,31 @@ subscription.
 /plugin install fpai-broker
 ```
 
+## Install (Gemini CLI)
+
+```bash
+gemini extensions install https://github.com/Financial-Portfolios-AI/financial-portfolios-ai-marketplace
+gemini extensions config financial-portfolios-ai
+```
+
+The second command prompts for your personal API token (`aqat_v1_…`), which Gemini stores in the
+extension's `.env` and the system keychain — it is never written into the manifest.
+
+Gemini CLI does not render MCP Apps, so the tools that only open an interactive view are excluded
+([`gemini-extension.json`](gemini-extension.json)); everything else answers as JSON, including the
+cross-portfolio breadth board and the access panel, whose results are computed server-side.
+[`GEMINI.md`](GEMINI.md) is loaded as the extension's context.
+
 (Other MCP clients: point them at the MCP server directly — see
 [financial-portfolios.ai/agentic](https://financial-portfolios.ai/agentic).)
+
+## Which deployment these point at
+
+> **The production domain does not serve the MCP endpoint yet.** `https://financial-portfolios.ai/mcp`
+> currently returns `404`, so the Gemini extension is published against the **dev** deployment,
+> `https://dev.financial-portfolios.ai/mcp`, which answers correctly. The Claude Code plugin still
+> defaults to the production URL and needs `FPAI_MCP_URL` set to the dev host until production is live.
+> Both will move to production once it is serving.
 
 ## Authentication
 
