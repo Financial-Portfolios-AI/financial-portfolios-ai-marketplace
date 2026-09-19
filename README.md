@@ -14,8 +14,24 @@ subscription.
 
 | Plugin | Purpose |
 |---|---|
-| **fpai-portfolio** | Connects the Financial Portfolios AI MCP and adds `/portfolio` + `/rebalance` commands, `portfolio-analysis` + `portfolio-visualization` skills, and a read-only `portfolio-analyst` subagent. |
+| **fpai-portfolio** | Connects the Financial Portfolios AI MCP and adds `/portfolio`, `/performance`, `/breadth`, `/rebalance`, `/drift` and `/digest` commands, the `portfolio-analysis`, `portfolio-visualization` and `connect-your-stack` skills, and a read-only `portfolio-analyst` subagent. |
+| **fpai-research** | `/holdings-news` and `/company` commands + the `market-context` skill — put the companies you hold in context using whatever market-data or news MCP you have connected, with every outside fact attributed. |
 | **fpai-broker** | `/to-orders` command + `broker-order-prep` skill that turn a rebalance into reviewable order tickets for a brokerage MCP (Interactive Brokers, Robinhood, Alpaca, …) — **propose → confirm → you execute**. |
+
+### The stack these assume
+
+We publish the **model portfolios** and nothing else: no market data, no news, no brokerage access.
+Those come from connectors you add, and the assistant joins them.
+
+| Layer | Gives you | Examples |
+|---|---|---|
+| Financial Portfolios AI | Holdings, weights, sector mix, concentration, changes, published performance, research | — |
+| Market data & news | What a company is, recent news, filings, fundamentals | EODHD, Alpha Vantage, Finnhub |
+| Brokerage / aggregator | Your own positions and balances | SnapTrade, Truthifi, IBKR |
+
+`/portfolio` needs only the first. `/holdings-news` needs the second. `/drift` and `/to-orders` need
+the third. The `connect-your-stack` skill explains which to add for what you want to do — ask the
+assistant "what else should I connect?".
 
 ## Install (Claude Code)
 
@@ -24,6 +40,7 @@ subscription.
 /plugin marketplace add Financial-Portfolios-AI/financial-portfolios-ai-marketplace
 # then install a plugin
 /plugin install fpai-portfolio
+/plugin install fpai-research
 /plugin install fpai-broker
 ```
 
@@ -55,7 +72,8 @@ cross-portfolio breadth board and the access panel, whose results are computed s
 
 ## Authentication
 
-The `fpai-portfolio` plugin bundles the MCP connection (`.mcp.json`). Provide your credentials via env:
+`fpai-portfolio` bundles the MCP connection (`.mcp.json`); `fpai-research` and `fpai-broker` use it,
+so install `fpai-portfolio` alongside either of them. Provide your credentials via env:
 
 - `FPAI_API_TOKEN` — a personal API token (`aqat_v1_…`) from **API Access** on the portal, **or**
 - use the **OAuth** connector flow (recommended for directory clients) — the plugin points at

@@ -1,0 +1,18 @@
+{
+  "name": "fpai-research",
+  "description": "Put the companies in your Financial Portfolios AI model portfolios in context: news, filings and fundamentals from whatever market-data MCP you have connected, joined to the holdings and the portal's own research.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Financial Portfolios AI",
+    "url": "https://financial-portfolios.ai"
+  },
+  "homepage": "https://financial-portfolios.ai/agentic",
+  "license": "MIT",
+  "keywords": [
+    "finance",
+    "research",
+    "news",
+    "market-data",
+    "mcp"
+  ]
+}
