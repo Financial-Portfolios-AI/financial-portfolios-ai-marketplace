@@ -2,7 +2,7 @@
   "name": "fpai-portfolio",
   "displayName": "FP.ai Portfolio",
   "description": "Explore, analyze and visualize your Financial Portfolios AI model portfolios from an LLM client. Bundles the MCP connection plus commands, skills and an analyst subagent.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Financial Portfolios AI",
     "url": "https://financial-portfolios.ai"

@@ -5,6 +5,10 @@
 #   dist/<id>.zip                   the same, one zip per skill, for upload
 #   plugins/fpai-portfolio/skills/automation-templates/SKILL.md
 #   plugins/fpai-portfolio/commands/schedule.md
+#   plugins/fpai-portfolio/commands/start.md
+#   commands/fpai/<journey>.toml     Gemini CLI commands (/fpai:<journey>)
+#   AGENTS.md                       guidance for Codex, Cursor and other agents
+#   README.md                       the journey table, between the journeys markers
 #   automations/README.md           copy-paste prompts per vendor (Gemini Spark, Muse, ChatGPT tasks)
 #
 # Edit here, then run `python scripts/build.py`. CI runs `--check`, which fails on drift.
@@ -23,6 +27,10 @@ rules: |
 # ---------------------------------------------------------------------------------------------
 journeys:
   - id: fpai-start
+    journey: start
+    mcp_prompt: start_here
+    command: "/fpai-portfolio:start"
+    panel: open_access_centre
     title: Start here
     description: >-
       Menu of what you can do with your Financial Portfolios AI model portfolios, and which extra
@@ -38,6 +46,10 @@ journeys:
       4. Ask which one they want and offer to start it.
 
   - id: fpai-portfolio
+    journey: portfolio
+    mcp_prompt: portfolio_review
+    command: "/fpai-portfolio:portfolio"
+    panel: open_portfolio_explorer
     title: Show me a portfolio
     description: >-
       Show a Financial Portfolios AI model portfolio: holdings, sector mix, concentration and what
@@ -51,6 +63,10 @@ journeys:
       4. Offer the next step: performance, holdings news, or what it shares with the other books.
 
   - id: fpai-performance
+    journey: performance
+    mcp_prompt: portfolio_performance
+    command: "/fpai-portfolio:performance"
+    panel: null
     title: How has it done
     description: >-
       How a Financial Portfolios AI model portfolio has performed against its benchmark, with risk
@@ -61,6 +77,10 @@ journeys:
       3. Show the figures as returned, and then the `disclaimer` in full.
 
   - id: fpai-holdings-news
+    journey: holdings-news
+    mcp_prompt: market_research_digest
+    command: "/fpai-research:holdings-news"
+    panel: null
     title: News on what it holds
     description: >-
       Recent news and context for the largest holdings of a Financial Portfolios AI model
@@ -74,6 +94,10 @@ journeys:
          the outside news visibly separate. Draw no buy or sell conclusion.
 
   - id: fpai-breadth
+    journey: breadth
+    mcp_prompt: most_held_stocks
+    command: "/fpai-portfolio:breadth"
+    panel: open_breadth_board
     title: What the portfolios agree on
     description: >-
       What Financial Portfolios AI model portfolios hold in common: most widely held stocks,
@@ -83,6 +107,10 @@ journeys:
       each pair by name and by weight, and each book's dominant sector and effective N.
 
   - id: fpai-drift
+    journey: drift
+    mcp_prompt: drift_check
+    command: "/fpai-portfolio:drift"
+    panel: null
     title: How far my account has drifted
     description: >-
       Compare the user's real brokerage holdings against a Financial Portfolios AI model portfolio
@@ -96,6 +124,10 @@ journeys:
       4. Stop there. Prepare no orders. If they want to act, offer the "align my account" journey.
 
   - id: fpai-align
+    journey: align
+    mcp_prompt: rebalance_advisor
+    command: "/fpai-portfolio:rebalance, then /fpai-broker:to-orders"
+    panel: open_rebalance_studio
     title: Align my account
     description: >-
       Align the user's holdings to a Financial Portfolios AI model portfolio: compute the arithmetic,
@@ -107,6 +139,15 @@ journeys:
       3. Only if the user asks: turn it into order tickets for their broker. Confirm each batch
          explicitly before anything is sent. There is no standing authorisation.
       4. Never invent a price, balance or fill. Flag any symbol the broker does not recognise.
+
+# The eighth journey is served by the automation templates below (skill `fpai-automations`).
+keep_me_posted:
+  journey: keep-me-posted
+  title: Keep me posted
+  mcp_prompt: portfolio_digest
+  command: "/fpai-portfolio:schedule (or /fpai-portfolio:digest once)"
+  skill: fpai-automations
+  panel: null
 
 # ---------------------------------------------------------------------------------------------
 # Automation templates: recurring, unattended, read-only.

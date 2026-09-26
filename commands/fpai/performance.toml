@@ -1,0 +1,18 @@
+# Generated from automations/templates.yaml by scripts/build.py. Do not edit.
+description = "How a Financial Portfolios AI model portfolio has performed against its benchmark, with risk statistics and best and worst holdings. Hypothetical and simulated."
+prompt = '''
+1. `get_portfolio_performance`, then `get_portfolio_metrics` for best and worst holdings.
+2. If `available` is false, report its `reason`; it is not an error and not zero.
+3. Show the figures as returned, and then the `disclaimer` in full.
+
+The user added: {{args}}
+
+Always:
+- Financial Portfolios AI data is informational and educational only: never a recommendation,
+  advice or a suitability assessment.
+- A portfolio with `delayed: true` is the public book, about 45 days old: give its `as_of` date
+  and never present it as current.
+- Performance comes only from `get_portfolio_performance` / `get_portfolio_metrics`; include their
+  `disclaimer` in full and unaltered. Never compute a return from any other source.
+- Attribute anything taken from another connector (news, prices, positions) to that connector.
+'''

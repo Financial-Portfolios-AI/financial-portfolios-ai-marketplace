@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "FP.ai agentic extensions for Financial Portfolios AI subscribers — interact with your model portfolios, run analysis and visualizations, and prepare broker orders, all from an LLM client via MCP.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
