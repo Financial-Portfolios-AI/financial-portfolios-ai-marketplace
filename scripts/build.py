@@ -83,7 +83,7 @@ a scheduled run never prepares, stages or places an order, whatever the user ask
 ## How to schedule
 
 - **Claude Cowork / Claude Desktop:** create a scheduled task with the prompt and cadence below.
-- **Claude Code:** `/schedule` with the prompt, or the `/fpai-portfolio:schedule` command.
+- **Claude Code:** `/schedule` with the prompt, or the `/financial-portfolios:schedule` command.
 - **ChatGPT:** ask "run this every <cadence>" with the prompt; ChatGPT creates a scheduled task.
 - **Gemini (Spark):** paste the prompt with the cadence at the start ("Every Monday at 8am, ...").
 
@@ -103,13 +103,13 @@ connector the user lacks, say which kind to add instead of scheduling a task tha
 def schedule_command(automations: list[dict]) -> str:
     ids = " | ".join(a["id"] for a in automations)
     return f"""---
-description: Set up a recurring, read-only FP.ai task from a predefined template (digest, drift watch, holdings news, ...).
+description: Set up a recurring, read-only Financial Portfolios task from a predefined template (digest, drift watch, holdings news, ...).
 argument-hint: "[{ids}]"
 ---
 
 {GENERATED}
 
-Help the user schedule the FP.ai automation template **$ARGUMENTS**.
+Help the user schedule the Financial Portfolios automation template **$ARGUMENTS**.
 
 1. Use the `automation-templates` skill. If no template was named, show its table and ask which one.
 2. If the template has `{{portfolio}}` in it, `list_portfolios` and ask which subscribed portfolio to use.
@@ -136,14 +136,14 @@ Gemini Spark / Muse: start the prompt with "{a['cadence']}, ".
 """)
     return f"""{GENERATED}
 
-# FP.ai automation templates
+# Financial Portfolios automation templates
 
 Recurring, read-only tasks. Paste one into your assistant's scheduler:
 
 | Assistant | Where |
 |---|---|
 | Claude Cowork / Desktop | Scheduled tasks → New task, paste the prompt, pick the cadence |
-| Claude Code | `/fpai-portfolio:schedule <template>` |
+| Claude Code | `/financial-portfolios:schedule <template>` |
 | ChatGPT | Paste the prompt and add "every <cadence>"; ChatGPT creates the task |
 | Gemini (Spark) | Paste the prompt, starting with the cadence |
 
@@ -181,7 +181,7 @@ prompt = '''
 
 def keep_me_posted_body(automations: list[dict]) -> str:
     rows = "\n".join(f"- `{a['id']}`: {a['title']}, {a['cadence']} ({needs_line(a['needs'])})" for a in automations)
-    return f"""Offer the FP.ai automation templates. Every one is read-only: a scheduled run never
+    return f"""Offer the Financial Portfolios automation templates. Every one is read-only: a scheduled run never
 prepares, stages or places an order.
 
 {rows}
@@ -223,7 +223,7 @@ AI MCP server first (see README.md); the server's own instructions carry the sam
 def journey_table(journeys: list[dict], kmp: dict) -> str:
     def row(j: dict, skill: str) -> str:
         panel = f"`{j['panel']}`" if j.get("panel") else "—"
-        return f"| **{j['journey']}** | `{j['mcp_prompt']}` | `{j['command']}` | `{skill}` | `/fpai:{j['journey']}` | {panel} |"
+        return f"| **{j['journey']}** | `{j['mcp_prompt']}` | `{j['command']}` | `{skill}` | `/financial-portfolios:{j['journey']}` | {panel} |"
 
     rows = [row(j, j["id"]) for j in journeys] + [row(kmp, kmp["skill"])]
     return "\n".join([
@@ -257,18 +257,18 @@ def render() -> dict[Path, bytes]:
         out[ROOT / "dist" / f"{j['id']}.zip"] = zip_bytes({f"{j['id']}/SKILL.md": text})
         bundle[f"{j['id']}/SKILL.md"] = text
     auto = automation_skill(automations, rules)
-    bundle["fpai-automations/SKILL.md"] = auto.replace("name: automation-templates", "name: fpai-automations", 1)
-    out[ROOT / "skills" / "fpai-automations" / "SKILL.md"] = bundle["fpai-automations/SKILL.md"].encode()
-    out[ROOT / "dist" / "fpai-automations.zip"] = zip_bytes({"fpai-automations/SKILL.md": bundle["fpai-automations/SKILL.md"]})
-    out[ROOT / "plugins/fpai-portfolio/skills/automation-templates/SKILL.md"] = auto.encode()
-    out[ROOT / "plugins/fpai-portfolio/commands/schedule.md"] = schedule_command(automations).encode()
+    bundle["portfolio-automations/SKILL.md"] = auto.replace("name: automation-templates", "name: portfolio-automations", 1)
+    out[ROOT / "skills" / "portfolio-automations" / "SKILL.md"] = bundle["portfolio-automations/SKILL.md"].encode()
+    out[ROOT / "dist" / "portfolio-automations.zip"] = zip_bytes({"portfolio-automations/SKILL.md": bundle["portfolio-automations/SKILL.md"]})
+    out[ROOT / "plugins/financial-portfolios/skills/automation-templates/SKILL.md"] = auto.encode()
+    out[ROOT / "plugins/financial-portfolios/commands/schedule.md"] = schedule_command(automations).encode()
     kmp = data["keep_me_posted"]
     start = next(j for j in journeys if j["journey"] == "start")
-    out[ROOT / "plugins/fpai-portfolio/commands/start.md"] = start_command(start, rules).encode()
+    out[ROOT / "plugins/financial-portfolios/commands/start.md"] = start_command(start, rules).encode()
     for j in journeys:
-        out[ROOT / "commands" / "fpai" / f"{j['journey']}.toml"] = gemini_command(j["description"], j["body"], rules).encode()
-    out[ROOT / "commands" / "fpai" / f"{kmp['journey']}.toml"] = gemini_command(
-        "Set up a read-only recurring FP.ai task from a predefined template.", keep_me_posted_body(automations), rules
+        out[ROOT / "commands" / "financial-portfolios" / f"{j['journey']}.toml"] = gemini_command(j["description"], j["body"], rules).encode()
+    out[ROOT / "commands" / "financial-portfolios" / f"{kmp['journey']}.toml"] = gemini_command(
+        "Set up a read-only recurring Financial Portfolios task from a predefined template.", keep_me_posted_body(automations), rules
     ).encode()
     out[ROOT / "AGENTS.md"] = agents_md(journeys, kmp, automations, rules).encode()
     readme = (ROOT / "README.md").read_text(encoding="utf-8")

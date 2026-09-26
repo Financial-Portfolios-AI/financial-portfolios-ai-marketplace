@@ -1,0 +1,31 @@
+# Generated from automations/templates.yaml by scripts/build.py. Do not edit.
+description = "Set up a read-only recurring Financial Portfolios task from a predefined template."
+prompt = '''
+Offer the Financial Portfolios automation templates. Every one is read-only: a scheduled run never
+prepares, stages or places an order.
+
+- `weekly-digest`: Weekly portfolio digest, Every Monday at 08:00 (Financial Portfolios AI only)
+- `rebalance-alert`: New publication alert, Every weekday at 07:00 (Financial Portfolios AI only)
+- `drift-watch`: Drift watch, Every Friday at 16:30 (Financial Portfolios AI + a brokerage or aggregator connector (e.g. SnapTrade, IBKR), read-only)
+- `holdings-news`: Holdings news, Every weekday at 07:30 (Financial Portfolios AI + a news or market-data connector)
+- `earnings-week`: Earnings this week, Every Sunday at 18:00 (Financial Portfolios AI + a market-data connector with an earnings calendar)
+- `monthly-performance`: Monthly performance note, First day of each month at 09:00 (Financial Portfolios AI only)
+- `research-digest`: Research digest, Every Thursday at 12:00 (Financial Portfolios AI only)
+
+1. If the user named a template, use it; otherwise list these and ask which one.
+2. If it needs a portfolio, `list_portfolios` and ask which subscribed one.
+3. If it needs a connector that is not available, say which kind to add and stop.
+4. Run it once now so the user sees the output, then explain how to schedule it in their client.
+   The prompts are in automations/README.md.
+
+The user added: {{args}}
+
+Always:
+- Financial Portfolios AI data is informational and educational only: never a recommendation,
+  advice or a suitability assessment.
+- A portfolio with `delayed: true` is the public book, about 45 days old: give its `as_of` date
+  and never present it as current.
+- Performance comes only from `get_portfolio_performance` / `get_portfolio_metrics`; include their
+  `disclaimer` in full and unaltered. Never compute a return from any other source.
+- Attribute anything taken from another connector (news, prices, positions) to that connector.
+'''

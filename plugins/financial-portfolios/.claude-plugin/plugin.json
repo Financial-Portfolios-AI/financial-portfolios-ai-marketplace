@@ -1,0 +1,22 @@
+{
+  "name": "financial-portfolios",
+  "displayName": "Financial Portfolios",
+  "description": "Explore, analyze and visualize your Financial Portfolios AI model portfolios from an LLM client, and put the companies they hold in context with your market-data or news MCP. Bundles the MCP connection plus commands, skills and an analyst subagent.",
+  "version": "0.3.0",
+  "author": {
+    "name": "Financial Portfolios AI",
+    "url": "https://financial-portfolios.ai"
+  },
+  "homepage": "https://financial-portfolios.ai/agentic",
+  "license": "MIT",
+  "keywords": [
+    "finance",
+    "portfolio",
+    "mcp",
+    "investing-research",
+    "analysis",
+    "research",
+    "news",
+    "market-data"
+  ]
+}

@@ -1,12 +1,12 @@
-# The single source for FP.ai journeys and automation templates.
+# The single source for Financial Portfolios journeys and automation templates.
 #
 # `scripts/build.py` renders this into:
 #   skills/<id>/SKILL.md            portable Agent Skills: claude.ai, Claude Desktop, ChatGPT
 #   dist/<id>.zip                   the same, one zip per skill, for upload
-#   plugins/fpai-portfolio/skills/automation-templates/SKILL.md
-#   plugins/fpai-portfolio/commands/schedule.md
-#   plugins/fpai-portfolio/commands/start.md
-#   commands/fpai/<journey>.toml     Gemini CLI commands (/fpai:<journey>)
+#   plugins/financial-portfolios/skills/automation-templates/SKILL.md
+#   plugins/financial-portfolios/commands/schedule.md
+#   plugins/financial-portfolios/commands/start.md
+#   commands/financial-portfolios/<journey>.toml  Gemini CLI commands (/financial-portfolios:<journey>)
 #   AGENTS.md                       guidance for Codex, Cursor and other agents
 #   README.md                       the journey table, between the journeys markers
 #   automations/README.md           copy-paste prompts per vendor (Gemini Spark, Muse, ChatGPT tasks)
@@ -26,15 +26,15 @@ rules: |
 # Journeys: one skill each. These are what the customer invokes by name.
 # ---------------------------------------------------------------------------------------------
 journeys:
-  - id: fpai-start
+  - id: portfolio-start
     journey: start
     mcp_prompt: start_here
-    command: "/fpai-portfolio:start"
+    command: "/financial-portfolios:start"
     panel: open_access_centre
     title: Start here
     description: >-
       Menu of what you can do with your Financial Portfolios AI model portfolios, and which extra
-      connectors each needs. Use when the user asks what FP.ai can do or how to get started.
+      connectors each needs. Use when the user asks what Financial Portfolios AI can do or how to get started.
     body: |
       Use the `start_here` prompt's approach:
       1. Call `list_portfolios`; note which are subscribed and which are delayed.
@@ -45,10 +45,10 @@ journeys:
          align my account, and scheduled digests.
       4. Ask which one they want and offer to start it.
 
-  - id: fpai-portfolio
+  - id: portfolio-overview
     journey: portfolio
     mcp_prompt: portfolio_review
-    command: "/fpai-portfolio:portfolio"
+    command: "/financial-portfolios:portfolio"
     panel: open_portfolio_explorer
     title: Show me a portfolio
     description: >-
@@ -62,10 +62,10 @@ journeys:
          (sector mix, effective N), `get_portfolio_changes` for the last 90 days.
       4. Offer the next step: performance, holdings news, or what it shares with the other books.
 
-  - id: fpai-performance
+  - id: portfolio-performance
     journey: performance
     mcp_prompt: portfolio_performance
-    command: "/fpai-portfolio:performance"
+    command: "/financial-portfolios:performance"
     panel: null
     title: How has it done
     description: >-
@@ -76,10 +76,10 @@ journeys:
       2. If `available` is false, report its `reason`; it is not an error and not zero.
       3. Show the figures as returned, and then the `disclaimer` in full.
 
-  - id: fpai-holdings-news
+  - id: holdings-news
     journey: holdings-news
     mcp_prompt: market_research_digest
-    command: "/fpai-research:holdings-news"
+    command: "/financial-portfolios:holdings-news"
     panel: null
     title: News on what it holds
     description: >-
@@ -93,10 +93,10 @@ journeys:
       4. One or two lines per holding, each attributed to its source. Keep the portfolio's data and
          the outside news visibly separate. Draw no buy or sell conclusion.
 
-  - id: fpai-breadth
+  - id: portfolio-breadth
     journey: breadth
     mcp_prompt: most_held_stocks
-    command: "/fpai-portfolio:breadth"
+    command: "/financial-portfolios:breadth"
     panel: open_breadth_board
     title: What the portfolios agree on
     description: >-
@@ -106,10 +106,10 @@ journeys:
       Prefer `open_breadth_board`. In text, report the most widely held names, the overlap between
       each pair by name and by weight, and each book's dominant sector and effective N.
 
-  - id: fpai-drift
+  - id: portfolio-drift
     journey: drift
     mcp_prompt: drift_check
-    command: "/fpai-portfolio:drift"
+    command: "/financial-portfolios:drift"
     panel: null
     title: How far my account has drifted
     description: >-
@@ -123,10 +123,10 @@ journeys:
          held in only one of the two.
       4. Stop there. Prepare no orders. If they want to act, offer the "align my account" journey.
 
-  - id: fpai-align
+  - id: portfolio-align
     journey: align
     mcp_prompt: rebalance_advisor
-    command: "/fpai-portfolio:rebalance, then /fpai-broker:to-orders"
+    command: "/financial-portfolios:rebalance, then /financial-portfolios-broker:to-orders"
     panel: open_rebalance_studio
     title: Align my account
     description: >-
@@ -140,13 +140,13 @@ journeys:
          explicitly before anything is sent. There is no standing authorisation.
       4. Never invent a price, balance or fill. Flag any symbol the broker does not recognise.
 
-# The eighth journey is served by the automation templates below (skill `fpai-automations`).
+# The eighth journey is served by the automation templates below (skill `portfolio-automations`).
 keep_me_posted:
   journey: keep-me-posted
   title: Keep me posted
   mcp_prompt: portfolio_digest
-  command: "/fpai-portfolio:schedule (or /fpai-portfolio:digest once)"
-  skill: fpai-automations
+  command: "/financial-portfolios:schedule (or /financial-portfolios:digest once)"
+  skill: portfolio-automations
   panel: null
 
 # ---------------------------------------------------------------------------------------------

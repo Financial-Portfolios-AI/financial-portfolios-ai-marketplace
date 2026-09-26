@@ -23,7 +23,7 @@ AI MCP server first (see README.md); the server's own instructions carry the sam
 
 ### start: Start here
 
-Menu of what you can do with your Financial Portfolios AI model portfolios, and which extra connectors each needs. Use when the user asks what FP.ai can do or how to get started.
+Menu of what you can do with your Financial Portfolios AI model portfolios, and which extra connectors each needs. Use when the user asks what Financial Portfolios AI can do or how to get started.
 
 Use the `start_here` prompt's approach:
 1. Call `list_portfolios`; note which are subscribed and which are delayed.
@@ -95,7 +95,7 @@ Align the user's holdings to a Financial Portfolios AI model portfolio: compute 
 
 ### keep-me-posted: Keep me posted
 
-Offer the FP.ai automation templates. Every one is read-only: a scheduled run never
+Offer the Financial Portfolios automation templates. Every one is read-only: a scheduled run never
 prepares, stages or places an order.
 
 - `weekly-digest`: Weekly portfolio digest, Every Monday at 08:00 (Financial Portfolios AI only)

@@ -1,13 +1,13 @@
 <!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->
 
-# FP.ai automation templates
+# Financial Portfolios automation templates
 
 Recurring, read-only tasks. Paste one into your assistant's scheduler:
 
 | Assistant | Where |
 |---|---|
 | Claude Cowork / Desktop | Scheduled tasks → New task, paste the prompt, pick the cadence |
-| Claude Code | `/fpai-portfolio:schedule <template>` |
+| Claude Code | `/financial-portfolios:schedule <template>` |
 | ChatGPT | Paste the prompt and add "every <cadence>"; ChatGPT creates the task |
 | Gemini (Spark) | Paste the prompt, starting with the cadence |
 
