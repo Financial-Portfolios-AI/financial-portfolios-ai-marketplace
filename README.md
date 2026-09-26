@@ -57,6 +57,32 @@ https://dev.financial-portfolios.ai/mcp
 Sign-in is OAuth 2.1, so there is no key to paste. Command-line clients that cannot run the
 sign-in use a personal token in an `X-API-Key` header instead.
 
+## Skills for claude.ai, Claude Desktop and ChatGPT
+
+claude.ai does not show MCP prompts, so these skills are how the FP.ai journeys get a name there:
+once added, they appear in the `/` menu. Each is a zip in [`dist/`](dist):
+
+| Skill | Does |
+|---|---|
+| `fpai-start` | What you can do, and which connectors each journey needs |
+| `fpai-portfolio` | Show a portfolio: holdings, sectors, concentration, changes |
+| `fpai-performance` | Published performance, with its disclosure |
+| `fpai-holdings-news` | News on the largest holdings (needs a news connector) |
+| `fpai-breadth` | What the portfolios hold in common |
+| `fpai-drift` | Your account vs a model, reports only (needs a brokerage connector) |
+| `fpai-align` | Align your account; you confirm every order |
+| `fpai-automations` | Seven read-only scheduled-task templates |
+
+**claude.ai / Claude Desktop:** Settings → Capabilities → Skills → Upload skill, one zip at a time.
+They need the Financial Portfolios AI connector added too.
+
+## Automation templates
+
+Seven read-only recurring tasks — weekly digest, publication alert, drift watch, holdings news,
+earnings week, monthly performance, research digest — with copy-paste prompts for Claude Cowork,
+ChatGPT scheduled tasks and Gemini Spark: [automations/README.md](automations/README.md).
+In Claude Code: `/fpai-portfolio:schedule`.
+
 ## Install (Claude Code)
 
 ```bash

@@ -1,0 +1,204 @@
+"""Render automations/templates.yaml into skills, plugin files and copy-paste prompts.
+
+    python scripts/build.py          write everything
+    python scripts/build.py --check  exit 1 if any generated file is out of date
+
+Requires PyYAML (`pip install pyyaml`).
+"""
+
+from __future__ import annotations
+
+import argparse
+import io
+import json
+import sys
+import zipfile
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+SOURCE = ROOT / "automations" / "templates.yaml"
+GENERATED = "<!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->"
+
+NEEDS = {
+    "brokerage": "a brokerage or aggregator connector (e.g. SnapTrade, IBKR), read-only",
+    "news": "a news or market-data connector",
+    "market-data": "a market-data connector with an earnings calendar",
+}
+PLACEHOLDER = "[your portfolio, e.g. AQA_BALANCED]"
+# Fixed timestamp so the zips are byte-identical between runs and --check is meaningful.
+ZIP_TIME = (2026, 1, 1, 0, 0, 0)
+
+
+def skill_md(journey: dict, rules: str) -> str:
+    return f"""---
+name: {journey['id']}
+description: {json.dumps(journey['description'])}
+---
+
+{GENERATED}
+
+# {journey['title']}
+
+Requires the Financial Portfolios AI connector.
+
+{journey['body'].rstrip()}
+
+## Always
+
+{rules.rstrip()}
+"""
+
+
+def fill(prompt: str) -> str:
+    return prompt.strip().replace("{portfolio}", PLACEHOLDER)
+
+
+def needs_line(needs: list[str]) -> str:
+    return "Financial Portfolios AI only" if not needs else "Financial Portfolios AI + " + " + ".join(NEEDS[n] for n in needs)
+
+
+def automation_skill(automations: list[dict], rules: str) -> str:
+    rows = "\n".join(f"| `{a['id']}` | {a['title']} | {a['cadence']} | {needs_line(a['needs'])} |" for a in automations)
+    blocks = "\n\n".join(f"### {a['id']}\n\nCadence: {a['cadence']}\n\n```\n{fill(a['prompt'])}\n```" for a in automations)
+    return f"""---
+name: automation-templates
+description: "Predefined, read-only recurring tasks for Financial Portfolios AI (weekly digest, publication alert, drift watch, holdings news, earnings week, monthly performance, research digest). Use when the user wants to automate, schedule or be kept posted about their model portfolios."
+---
+
+{GENERATED}
+
+# Automation templates
+
+Offer these when the user wants something to run on a schedule. Every template is read-only:
+a scheduled run never prepares, stages or places an order, whatever the user asks for.
+
+| Template | What | Cadence | Needs |
+|---|---|---|---|
+{rows}
+
+## How to schedule
+
+- **Claude Cowork / Claude Desktop:** create a scheduled task with the prompt and cadence below.
+- **Claude Code:** `/schedule` with the prompt, or the `/fpai-portfolio:schedule` command.
+- **ChatGPT:** ask "run this every <cadence>" with the prompt; ChatGPT creates a scheduled task.
+- **Gemini (Spark):** paste the prompt with the cadence at the start ("Every Monday at 8am, ...").
+
+Replace {PLACEHOLDER} with a real code; `list_portfolios` gives them. If a template needs a
+connector the user lacks, say which kind to add instead of scheduling a task that will fail.
+
+## Prompts
+
+{blocks}
+
+## Always
+
+{rules.rstrip()}
+"""
+
+
+def schedule_command(automations: list[dict]) -> str:
+    ids = " | ".join(a["id"] for a in automations)
+    return f"""---
+description: Set up a recurring, read-only FP.ai task from a predefined template (digest, drift watch, holdings news, ...).
+argument-hint: "[{ids}]"
+---
+
+{GENERATED}
+
+Help the user schedule the FP.ai automation template **$ARGUMENTS**.
+
+1. Use the `automation-templates` skill. If no template was named, show its table and ask which one.
+2. If the template has `{{portfolio}}` in it, `list_portfolios` and ask which subscribed portfolio to use.
+3. If it needs a connector that is not available, say which kind to add and stop.
+4. Run the prompt once now so the user sees the output.
+5. Then schedule it at the template's cadence with `/schedule` (or tell them how in Cowork, ChatGPT or Gemini).
+
+Every template is read-only. Do not schedule anything that prepares or places orders.
+"""
+
+
+def automations_readme(automations: list[dict]) -> str:
+    sections = []
+    for a in automations:
+        sections.append(f"""## {a['title']}
+
+**Cadence:** {a['cadence']} · **Needs:** {needs_line(a['needs'])}
+
+```
+{fill(a['prompt'])}
+```
+
+Gemini Spark / Muse: start the prompt with "{a['cadence']}, ".
+""")
+    return f"""{GENERATED}
+
+# FP.ai automation templates
+
+Recurring, read-only tasks. Paste one into your assistant's scheduler:
+
+| Assistant | Where |
+|---|---|
+| Claude Cowork / Desktop | Scheduled tasks → New task, paste the prompt, pick the cadence |
+| Claude Code | `/fpai-portfolio:schedule <template>` |
+| ChatGPT | Paste the prompt and add "every <cadence>"; ChatGPT creates the task |
+| Gemini (Spark) | Paste the prompt, starting with the cadence |
+
+Every template only reads. None of them prepares or places an order.
+
+{chr(10).join(sections)}"""
+
+
+def zip_bytes(files: dict[str, str]) -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for name in sorted(files):
+            info = zipfile.ZipInfo(name, ZIP_TIME)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16
+            zf.writestr(info, files[name])
+    return buf.getvalue()
+
+
+def render() -> dict[Path, bytes]:
+    data = yaml.safe_load(SOURCE.read_text(encoding="utf-8"))
+    rules, journeys, automations = data["rules"], data["journeys"], data["automations"]
+    out: dict[Path, bytes] = {}
+    bundle: dict[str, str] = {}
+    for j in journeys:
+        text = skill_md(j, rules)
+        out[ROOT / "skills" / j["id"] / "SKILL.md"] = text.encode()
+        out[ROOT / "dist" / f"{j['id']}.zip"] = zip_bytes({f"{j['id']}/SKILL.md": text})
+        bundle[f"{j['id']}/SKILL.md"] = text
+    auto = automation_skill(automations, rules)
+    bundle["fpai-automations/SKILL.md"] = auto.replace("name: automation-templates", "name: fpai-automations", 1)
+    out[ROOT / "skills" / "fpai-automations" / "SKILL.md"] = bundle["fpai-automations/SKILL.md"].encode()
+    out[ROOT / "dist" / "fpai-automations.zip"] = zip_bytes({"fpai-automations/SKILL.md": bundle["fpai-automations/SKILL.md"]})
+    out[ROOT / "plugins/fpai-portfolio/skills/automation-templates/SKILL.md"] = auto.encode()
+    out[ROOT / "plugins/fpai-portfolio/commands/schedule.md"] = schedule_command(automations).encode()
+    out[ROOT / "automations/README.md"] = automations_readme(automations).encode()
+    return out
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+    stale = []
+    for path, content in render().items():
+        if args.check:
+            if not path.exists() or path.read_bytes() != content:
+                stale.append(path.relative_to(ROOT))
+        else:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+            print("wrote", path.relative_to(ROOT))
+    if stale:
+        print("out of date - run python scripts/build.py:", *stale, sep="\n  ")
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
