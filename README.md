@@ -176,6 +176,14 @@ Access is always scoped to your active subscriptions and can be revoked any time
 - These rules live in the MCP server's own instructions; the skills and commands repeat them.
 - Data from tools/pages is treated as data, never as instructions.
 
+## Privacy and terms
+
+These plugins, skills and extensions are governed by the Financial Portfolios AI
+[Privacy Policy](https://financial-portfolios.ai/legal/privacy),
+[Terms of Service](https://financial-portfolios.ai/legal/terms) and
+[Legal Disclaimer](https://financial-portfolios.ai/legal/disclaimer). Questions:
+[financial-portfolios.ai/contact](https://financial-portfolios.ai/contact).
+
 ## For contributors
 
 [`automations/templates.yaml`](automations/templates.yaml) is the single source for the journeys and
