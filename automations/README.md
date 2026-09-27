@@ -1,13 +1,13 @@
 <!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->
 
-# FP.ai automation templates
+# Financial Portfolios automation templates
 
 Recurring, read-only tasks. Paste one into your assistant's scheduler:
 
 | Assistant | Where |
 |---|---|
 | Claude Cowork / Desktop | Scheduled tasks → New task, paste the prompt, pick the cadence |
-| Claude Code | `/fpai-portfolio:schedule <template>` |
+| Claude Code | `/financial-portfolios:schedule <template>` |
 | ChatGPT | Paste the prompt and add "every <cadence>"; ChatGPT creates the task |
 | Gemini (Spark) | Paste the prompt, starting with the cadence |
 
@@ -96,3 +96,16 @@ with one sentence.
 ```
 
 Gemini Spark / Muse: start the prompt with "Every Thursday at 12:00, ".
+
+## Monthly portfolio report
+
+**Cadence:** First business day of each month at 09:00 · **Needs:** Financial Portfolios AI only
+
+```
+Using Financial Portfolios AI, write a report on my portfolio [your portfolio, e.g. AQA_BALANCED] as text: the as-of
+date, top holdings, sector mix and concentration, what changed in the last month, and the
+published performance with its disclaimer in full. Calculate no figure yourself, create no
+files and end with "Not investment advice."
+```
+
+Gemini Spark / Muse: start the prompt with "First business day of each month at 09:00, ".

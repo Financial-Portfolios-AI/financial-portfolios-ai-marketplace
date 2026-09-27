@@ -1,0 +1,45 @@
+---
+name: portfolio-report
+description: "Build a report on a Financial Portfolios AI model portfolio as a slide deck, PDF, Word document, spreadsheet or CSV: holdings, sectors, changes and published performance. Use when the user asks for a report, deck, PDF, export or spreadsheet of a portfolio."
+---
+
+<!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->
+
+# Portfolio report
+
+Requires the Financial Portfolios AI connector.
+
+1. Ask which portfolio (or `list_portfolios`) and which format: slides (.pptx), PDF, Word
+   (.docx), spreadsheet (.xlsx) or CSV. Default to PDF.
+2. Gather, from Financial Portfolios AI only: `get_portfolio_allocation`,
+   `get_portfolio_concentration`, `get_portfolio_changes` (90 days) and
+   `get_portfolio_performance` with `get_portfolio_metrics`.
+3. Build these sections, in order:
+   - Cover: portfolio name, `as_of` date, and "Delayed public book" if `delayed` is true.
+   - Allocation: top holdings table and an allocation chart; cash.
+   - Sectors and concentration: sector chart, top 5 / top 10, effective N.
+   - What changed: opened, closed, raised, cut, turnover.
+   - Performance: the published figures against the benchmark, then the `disclaimer` in
+     full. If `available` is false, give the `reason` instead.
+   - Only if the user asks: holdings news from their news connector, in its own section,
+     each item attributed to its source.
+   - Notice: informational and educational only; not investment advice; no suitability
+     assessment.
+4. For a spreadsheet or CSV, write one sheet (or file) per section as plain tables: holdings,
+   sectors, changes, performance statistics, with the `as_of` date and the disclaimer on
+   each sheet.
+5. Create the file with the client's own document tools (for example the built-in
+   PowerPoint, Word, Excel or PDF skills). If the client cannot create files, give the
+   report as Markdown and say so.
+6. Put the `as_of` date and "Not investment advice" in the footer of every page or slide.
+   Chart only figures returned by the tools; keep one colour per sector throughout.
+
+## Always
+
+- Financial Portfolios AI data is informational and educational only: never a recommendation,
+  advice or a suitability assessment.
+- A portfolio with `delayed: true` is the public book, about 45 days old: give its `as_of` date
+  and never present it as current.
+- Performance comes only from `get_portfolio_performance` / `get_portfolio_metrics`; include their
+  `disclaimer` in full and unaltered. Never compute a return from any other source.
+- Attribute anything taken from another connector (news, prices, positions) to that connector.

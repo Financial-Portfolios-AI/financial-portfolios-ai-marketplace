@@ -1,0 +1,29 @@
+---
+name: portfolio-start
+description: "Menu of what you can do with your Financial Portfolios AI model portfolios, and which extra connectors each needs. Use when the user asks what Financial Portfolios AI can do or how to get started."
+---
+
+<!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->
+
+# Start here
+
+Requires the Financial Portfolios AI connector.
+
+Use the `start_here` prompt's approach:
+1. Call `list_portfolios`; note which are subscribed and which are delayed.
+2. Check which other connectors are available in this conversation: a market-data or news
+   connector, and a brokerage or aggregator connector. Do not call them.
+3. Offer the journeys below in one short table, marking any whose connector is missing:
+   access, show a portfolio, performance, holdings news, what the portfolios share, drift,
+   align my account, and scheduled digests.
+4. Ask which one they want and offer to start it.
+
+## Always
+
+- Financial Portfolios AI data is informational and educational only: never a recommendation,
+  advice or a suitability assessment.
+- A portfolio with `delayed: true` is the public book, about 45 days old: give its `as_of` date
+  and never present it as current.
+- Performance comes only from `get_portfolio_performance` / `get_portfolio_metrics`; include their
+  `disclaimer` in full and unaltered. Never compute a return from any other source.
+- Attribute anything taken from another connector (news, prices, positions) to that connector.

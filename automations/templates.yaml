@@ -1,10 +1,14 @@
-# The single source for FP.ai journeys and automation templates.
+# The single source for Financial Portfolios journeys and automation templates.
 #
 # `scripts/build.py` renders this into:
 #   skills/<id>/SKILL.md            portable Agent Skills: claude.ai, Claude Desktop, ChatGPT
 #   dist/<id>.zip                   the same, one zip per skill, for upload
-#   plugins/fpai-portfolio/skills/automation-templates/SKILL.md
-#   plugins/fpai-portfolio/commands/schedule.md
+#   plugins/financial-portfolios/skills/automation-templates/SKILL.md
+#   plugins/financial-portfolios/commands/schedule.md
+#   plugins/financial-portfolios/commands/start.md
+#   commands/financial-portfolios/<journey>.toml  Gemini CLI commands (/financial-portfolios:<journey>)
+#   AGENTS.md                       guidance for Codex, Cursor and other agents
+#   README.md                       the journey table, between the journeys markers
 #   automations/README.md           copy-paste prompts per vendor (Gemini Spark, Muse, ChatGPT tasks)
 #
 # Edit here, then run `python scripts/build.py`. CI runs `--check`, which fails on drift.
@@ -22,11 +26,16 @@ rules: |
 # Journeys: one skill each. These are what the customer invokes by name.
 # ---------------------------------------------------------------------------------------------
 journeys:
-  - id: fpai-start
+  - id: portfolio-start
+    journey: start
+    plugin_command: true
+    mcp_prompt: start_here
+    command: "/financial-portfolios:start"
+    panel: open_access_centre
     title: Start here
     description: >-
       Menu of what you can do with your Financial Portfolios AI model portfolios, and which extra
-      connectors each needs. Use when the user asks what FP.ai can do or how to get started.
+      connectors each needs. Use when the user asks what Financial Portfolios AI can do or how to get started.
     body: |
       Use the `start_here` prompt's approach:
       1. Call `list_portfolios`; note which are subscribed and which are delayed.
@@ -37,7 +46,11 @@ journeys:
          align my account, and scheduled digests.
       4. Ask which one they want and offer to start it.
 
-  - id: fpai-portfolio
+  - id: portfolio-overview
+    journey: portfolio
+    mcp_prompt: portfolio_review
+    command: "/financial-portfolios:portfolio"
+    panel: open_portfolio_explorer
     title: Show me a portfolio
     description: >-
       Show a Financial Portfolios AI model portfolio: holdings, sector mix, concentration and what
@@ -50,7 +63,11 @@ journeys:
          (sector mix, effective N), `get_portfolio_changes` for the last 90 days.
       4. Offer the next step: performance, holdings news, or what it shares with the other books.
 
-  - id: fpai-performance
+  - id: portfolio-performance
+    journey: performance
+    mcp_prompt: portfolio_performance
+    command: "/financial-portfolios:performance"
+    panel: null
     title: How has it done
     description: >-
       How a Financial Portfolios AI model portfolio has performed against its benchmark, with risk
@@ -60,7 +77,11 @@ journeys:
       2. If `available` is false, report its `reason`; it is not an error and not zero.
       3. Show the figures as returned, and then the `disclaimer` in full.
 
-  - id: fpai-holdings-news
+  - id: holdings-news
+    journey: holdings-news
+    mcp_prompt: market_research_digest
+    command: "/financial-portfolios:holdings-news"
+    panel: null
     title: News on what it holds
     description: >-
       Recent news and context for the largest holdings of a Financial Portfolios AI model
@@ -73,7 +94,11 @@ journeys:
       4. One or two lines per holding, each attributed to its source. Keep the portfolio's data and
          the outside news visibly separate. Draw no buy or sell conclusion.
 
-  - id: fpai-breadth
+  - id: portfolio-breadth
+    journey: breadth
+    mcp_prompt: most_held_stocks
+    command: "/financial-portfolios:breadth"
+    panel: open_breadth_board
     title: What the portfolios agree on
     description: >-
       What Financial Portfolios AI model portfolios hold in common: most widely held stocks,
@@ -82,7 +107,11 @@ journeys:
       Prefer `open_breadth_board`. In text, report the most widely held names, the overlap between
       each pair by name and by weight, and each book's dominant sector and effective N.
 
-  - id: fpai-drift
+  - id: portfolio-drift
+    journey: drift
+    mcp_prompt: drift_check
+    command: "/financial-portfolios:drift"
+    panel: null
     title: How far my account has drifted
     description: >-
       Compare the user's real brokerage holdings against a Financial Portfolios AI model portfolio
@@ -95,7 +124,11 @@ journeys:
          held in only one of the two.
       4. Stop there. Prepare no orders. If they want to act, offer the "align my account" journey.
 
-  - id: fpai-align
+  - id: portfolio-align
+    journey: align
+    mcp_prompt: rebalance_advisor
+    command: "/financial-portfolios:rebalance, then /financial-portfolios-broker:to-orders"
+    panel: open_rebalance_studio
     title: Align my account
     description: >-
       Align the user's holdings to a Financial Portfolios AI model portfolio: compute the arithmetic,
@@ -107,6 +140,52 @@ journeys:
       3. Only if the user asks: turn it into order tickets for their broker. Confirm each batch
          explicitly before anything is sent. There is no standing authorisation.
       4. Never invent a price, balance or fill. Flag any symbol the broker does not recognise.
+
+  - id: portfolio-report
+    journey: report
+    mcp_prompt: portfolio_report
+    command: "/financial-portfolios:report"
+    plugin_command: true
+    panel: null
+    title: Portfolio report
+    description: >-
+      Build a report on a Financial Portfolios AI model portfolio as a slide deck, PDF, Word
+      document, spreadsheet or CSV: holdings, sectors, changes and published performance. Use when
+      the user asks for a report, deck, PDF, export or spreadsheet of a portfolio.
+    body: |
+      1. Ask which portfolio (or `list_portfolios`) and which format: slides (.pptx), PDF, Word
+         (.docx), spreadsheet (.xlsx) or CSV. Default to PDF.
+      2. Gather, from Financial Portfolios AI only: `get_portfolio_allocation`,
+         `get_portfolio_concentration`, `get_portfolio_changes` (90 days) and
+         `get_portfolio_performance` with `get_portfolio_metrics`.
+      3. Build these sections, in order:
+         - Cover: portfolio name, `as_of` date, and "Delayed public book" if `delayed` is true.
+         - Allocation: top holdings table and an allocation chart; cash.
+         - Sectors and concentration: sector chart, top 5 / top 10, effective N.
+         - What changed: opened, closed, raised, cut, turnover.
+         - Performance: the published figures against the benchmark, then the `disclaimer` in
+           full. If `available` is false, give the `reason` instead.
+         - Only if the user asks: holdings news from their news connector, in its own section,
+           each item attributed to its source.
+         - Notice: informational and educational only; not investment advice; no suitability
+           assessment.
+      4. For a spreadsheet or CSV, write one sheet (or file) per section as plain tables: holdings,
+         sectors, changes, performance statistics, with the `as_of` date and the disclaimer on
+         each sheet.
+      5. Create the file with the client's own document tools (for example the built-in
+         PowerPoint, Word, Excel or PDF skills). If the client cannot create files, give the
+         report as Markdown and say so.
+      6. Put the `as_of` date and "Not investment advice" in the footer of every page or slide.
+         Chart only figures returned by the tools; keep one colour per sector throughout.
+
+# The eighth journey is served by the automation templates below (skill `portfolio-automations`).
+keep_me_posted:
+  journey: keep-me-posted
+  title: Keep me posted
+  mcp_prompt: portfolio_digest
+  command: "/financial-portfolios:schedule (or /financial-portfolios:digest once)"
+  skill: portfolio-automations
+  panel: null
 
 # ---------------------------------------------------------------------------------------------
 # Automation templates: recurring, unattended, read-only.
@@ -181,3 +260,14 @@ automations:
       Using Financial Portfolios AI, summarise research posts published in the last 7 days, in two
       lines each, and flag any that mention a ticker held in my portfolios. If there are none, reply
       with one sentence.
+
+  - id: monthly-report
+    title: Monthly portfolio report
+    cadence: First business day of each month at 09:00
+    cron: "0 9 1 * *"
+    needs: []
+    prompt: |
+      Using Financial Portfolios AI, write a report on my portfolio {portfolio} as text: the as-of
+      date, top holdings, sector mix and concentration, what changed in the last month, and the
+      published performance with its disclaimer in full. Calculate no figure yourself, create no
+      files and end with "Not investment advice."

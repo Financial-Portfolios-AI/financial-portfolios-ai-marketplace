@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "financial-portfolios-ai": {
+      "type": "http",
+      "url": "${FINANCIAL_PORTFOLIOS_MCP_URL:-https://dev.financial-portfolios.ai/mcp}",
+      "headers": {
+        "X-API-Key": "${FINANCIAL_PORTFOLIOS_API_TOKEN}"
+      }
+    }
+  }
+}

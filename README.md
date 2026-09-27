@@ -1,22 +1,130 @@
 # Financial Portfolios AI — Agentic Marketplace
 
-A **Claude Code plugin marketplace** and a **Gemini CLI extension** for
-[Financial Portfolios AI](https://financial-portfolios.ai) subscribers. Install a plugin and your LLM
-client can talk to your model portfolios over the [MCP](https://modelcontextprotocol.io) server: explore
-holdings, run analysis and visualizations, and prepare broker orders — all with your data, scoped to your
-subscription.
+Plugins, skills and extensions that connect your AI assistant to your
+[Financial Portfolios AI](https://financial-portfolios.ai) model portfolios over
+[MCP](https://modelcontextprotocol.io): explore holdings, see performance, check drift, and prepare
+broker orders — all with your data, scoped to your subscription.
 
 > Informational & educational only. Everything here surfaces the **published model** portfolios
 > (delayed / simulated) and helps you *prepare* actions. It is **not investment advice**, and nothing
-> here places a trade without your explicit confirmation.
+> here places a trade: **it proposes → you confirm → you place**.
 
-## What's inside
+> **Preview.** Everything below points at the **dev** deployment,
+> `https://dev.financial-portfolios.ai/mcp`, because `https://financial-portfolios.ai/mcp` returns
+> `404` today. See [Which deployment these point at](#which-deployment-these-point-at).
+
+## Pick your assistant
+
+| Assistant | What to install | Journeys by name |
+|---|---|---|
+| [Claude Code](#claude-code) | The plugins in this marketplace | `/financial-portfolios:<journey>` commands |
+| [claude.ai / Claude Desktop](#claudeai-and-claude-desktop) | The connector + the skills in [`dist/`](dist) | Skills in the `/` menu |
+| [ChatGPT](#chatgpt) | The connector | Ask in words (skills later) |
+| [Gemini CLI / Antigravity CLI](#gemini-cli) | The extension | `/financial-portfolios:<journey>` commands |
+| [Cursor / VS Code](#cursor-and-vs-code) | One-click MCP install | The server's MCP prompts |
+| [Codex and other agents](#other-clients) | The server URL | [`AGENTS.md`](AGENTS.md) |
+
+### Claude Code
+
+```bash
+/plugin marketplace add Financial-Portfolios-AI/financial-portfolios-ai-marketplace
+/plugin install financial-portfolios
+/plugin install financial-portfolios-broker   # optional: only if you want order tickets
+```
 
 | Plugin | Purpose |
 |---|---|
-| **fpai-portfolio** | Connects the Financial Portfolios AI MCP and adds `/portfolio`, `/performance`, `/breadth`, `/rebalance`, `/drift` and `/digest` commands, the `portfolio-analysis`, `portfolio-visualization` and `connect-your-stack` skills, and a read-only `portfolio-analyst` subagent. |
-| **fpai-research** | `/holdings-news` and `/company` commands + the `market-context` skill — put the companies you hold in context using whatever market-data or news MCP you have connected, with every outside fact attributed. |
-| **fpai-broker** | `/to-orders` command + `broker-order-prep` skill that turn a rebalance into reviewable order tickets for a brokerage MCP (Interactive Brokers, Robinhood, Alpaca, …) — **propose → confirm → you execute**. |
+| **Financial Portfolios** (`financial-portfolios`) | Bundles the MCP connection. Commands `start`, `report`, `portfolio`, `performance`, `breadth`, `drift`, `rebalance`, `digest`, `schedule`, `holdings-news` and `company`; the `portfolio-analysis`, `portfolio-visualization`, `market-context`, `connect-your-stack` and `automation-templates` skills; a read-only `portfolio-analyst` subagent. |
+| **Financial Portfolios Broker** (`financial-portfolios-broker`) | `to-orders` command + `broker-order-prep` skill: turn a rebalance into reviewable order tickets for a brokerage MCP (IBKR, Robinhood, Alpaca, …). A separate, opt-in install because it is the only plugin that prepares orders. |
+
+> **Renamed.** The `fpai-portfolio`, `fpai-research` and `fpai-broker` plugins are now
+> `financial-portfolios` (portfolio and research merged) and `financial-portfolios-broker`. If you
+> installed the old ones, `/plugin uninstall` each `fpai-*` plugin and install the new names. Set
+> `FINANCIAL_PORTFOLIOS_API_TOKEN` instead of `FPAI_API_TOKEN` (the same token variable as the
+> Gemini extension) and `FINANCIAL_PORTFOLIOS_MCP_URL` instead of `FPAI_MCP_URL`. The claude.ai
+> skills are renamed too (`fpai-start` → `portfolio-start`, …): remove the old ones and upload the
+> new zips.
+
+Claude Code shows MCP App panels as text, not as interactive views
+([anthropics/claude-code#95149](https://github.com/anthropics/claude-code/issues/95149)), so the
+commands answer in text.
+
+### claude.ai and Claude Desktop
+
+1. Add the connector: Settings → Connectors → Add custom connector, URL
+   `https://dev.financial-portfolios.ai/mcp`. Sign-in is OAuth, so there is no key to paste.
+2. Add the skills: Settings → Capabilities → Skills → Upload skill, one zip from [`dist/`](dist)
+   at a time.
+
+claude.ai does not show MCP prompts
+([claude-ai-mcp#333](https://github.com/anthropics/claude-ai-mcp/issues/333)), so the skills are
+how the journeys get a name there: once added, they appear in the `/` menu. The MCP App panels do
+render here.
+
+### ChatGPT
+
+Add `https://dev.financial-portfolios.ai/mcp` as a custom connector (developer mode) and sign in
+with OAuth. Ask for a journey in words ("show my portfolio", "how far has my account drifted").
+A ChatGPT package of the skills will follow once production serves `/mcp`.
+
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/Financial-Portfolios-AI/financial-portfolios-ai-marketplace
+gemini extensions config financial-portfolios-ai
+```
+
+The second command prompts for your personal API token (`aqat_v1_…`), which Gemini stores in the
+extension's `.env` and the system keychain — it is never written into the manifest. The journeys
+are commands: `/financial-portfolios:start`, `/financial-portfolios:drift`, and so on
+([`commands/financial-portfolios`](commands/financial-portfolios)).
+
+> **Antigravity CLI.** Since 18 June 2026 Gemini CLI serves only enterprise, Google Cloud and paid
+> API-key users; free and AI Pro/Ultra users moved to Antigravity CLI. There, import this extension
+> with `agy plugin import gemini`: the commands become skills, the MCP server moves to
+> `mcp_config.json`, and `GEMINI.md` / `AGENTS.md` are read as they are.
+
+Gemini CLI does not render MCP Apps, so the tools that only open an interactive view are excluded
+([`gemini-extension.json`](gemini-extension.json)); the breadth board and access panel answer as
+JSON. [`GEMINI.md`](GEMINI.md) is loaded as the extension's context.
+
+### Cursor and VS Code
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=financial-portfolios-ai&config=eyJ1cmwiOiJodHRwczovL2Rldi5maW5hbmNpYWwtcG9ydGZvbGlvcy5haS9tY3AifQ%3D%3D)
+[![Add to VS Code](https://img.shields.io/badge/VS_Code-Add_MCP_server-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D)
+[![Add to VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Add_MCP_server-24bfa5?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D&quality=insiders)
+
+These add the connector; the journeys are available as the server's MCP prompts.
+
+### Other clients
+
+Windsurf, Zed, LM Studio, Codex and anything else that speaks MCP: add the server URL by hand.
+
+```
+https://dev.financial-portfolios.ai/mcp
+```
+
+Command-line clients that cannot run the OAuth sign-in send a personal token in an `X-API-Key`
+header instead. Agents that read [`AGENTS.md`](AGENTS.md) get the journeys and rules from it.
+
+## The journeys
+
+Nine journeys, with the same names everywhere. **report** builds a slide deck, PDF, Word
+document, spreadsheet or CSV with the assistant's own document tools where it has them:
+
+<!-- journeys:start (generated by scripts/build.py from automations/templates.yaml) -->
+| Journey | MCP prompt | Claude Code | claude.ai skill | Gemini CLI | MCP App panel |
+|---|---|---|---|---|---|
+| **start** | `start_here` | `/financial-portfolios:start` | `portfolio-start` | `/financial-portfolios:start` | `open_access_centre` |
+| **portfolio** | `portfolio_review` | `/financial-portfolios:portfolio` | `portfolio-overview` | `/financial-portfolios:portfolio` | `open_portfolio_explorer` |
+| **performance** | `portfolio_performance` | `/financial-portfolios:performance` | `portfolio-performance` | `/financial-portfolios:performance` | — |
+| **holdings-news** | `market_research_digest` | `/financial-portfolios:holdings-news` | `holdings-news` | `/financial-portfolios:holdings-news` | — |
+| **breadth** | `most_held_stocks` | `/financial-portfolios:breadth` | `portfolio-breadth` | `/financial-portfolios:breadth` | `open_breadth_board` |
+| **drift** | `drift_check` | `/financial-portfolios:drift` | `portfolio-drift` | `/financial-portfolios:drift` | — |
+| **align** | `rebalance_advisor` | `/financial-portfolios:rebalance, then /financial-portfolios-broker:to-orders` | `portfolio-align` | `/financial-portfolios:align` | `open_rebalance_studio` |
+| **report** | `portfolio_report` | `/financial-portfolios:report` | `portfolio-report` | `/financial-portfolios:report` | — |
+| **keep-me-posted** | `portfolio_digest` | `/financial-portfolios:schedule (or /financial-portfolios:digest once)` | `portfolio-automations` | `/financial-portfolios:keep-me-posted` | — |
+<!-- journeys:end -->
 
 ### The stack these assume
 
@@ -29,121 +137,68 @@ Those come from connectors you add, and the assistant joins them.
 | Market data & news | What a company is, recent news, filings, fundamentals | EODHD, Alpha Vantage, Finnhub |
 | Brokerage / aggregator | Your own positions and balances | SnapTrade, Truthifi, IBKR |
 
-`/portfolio` needs only the first. `/holdings-news` needs the second. `/drift` and `/to-orders` need
-the third. The `connect-your-stack` skill explains which to add for what you want to do — ask the
-assistant "what else should I connect?".
-
-## Connect the MCP server
-
-One click in editors that support an install link:
-
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=financial-portfolios-ai&config=eyJ1cmwiOiJodHRwczovL2Rldi5maW5hbmNpYWwtcG9ydGZvbGlvcy5haS9tY3AifQ%3D%3D)
-[![Add to VS Code](https://img.shields.io/badge/VS_Code-Add_MCP_server-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D)
-[![Add to VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Add_MCP_server-24bfa5?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D&quality=insiders)
-
-These add the connector only. Claude Code users want the plugins below, which bundle the
-connection plus commands and skills.
-
-> The buttons point at the **dev** deployment, because `https://financial-portfolios.ai/mcp`
-> returns `404` today. See [Which deployment these point at](#which-deployment-these-point-at).
-
-Anything else — Claude Desktop, ChatGPT, Windsurf, Zed, LM Studio — has no install link, so add the
-server URL by hand:
-
-```
-https://dev.financial-portfolios.ai/mcp
-```
-
-Sign-in is OAuth 2.1, so there is no key to paste. Command-line clients that cannot run the
-sign-in use a personal token in an `X-API-Key` header instead.
-
-## Skills for claude.ai, Claude Desktop and ChatGPT
-
-claude.ai does not show MCP prompts, so these skills are how the FP.ai journeys get a name there:
-once added, they appear in the `/` menu. Each is a zip in [`dist/`](dist):
-
-| Skill | Does |
-|---|---|
-| `fpai-start` | What you can do, and which connectors each journey needs |
-| `fpai-portfolio` | Show a portfolio: holdings, sectors, concentration, changes |
-| `fpai-performance` | Published performance, with its disclosure |
-| `fpai-holdings-news` | News on the largest holdings (needs a news connector) |
-| `fpai-breadth` | What the portfolios hold in common |
-| `fpai-drift` | Your account vs a model, reports only (needs a brokerage connector) |
-| `fpai-align` | Align your account; you confirm every order |
-| `fpai-automations` | Seven read-only scheduled-task templates |
-
-**claude.ai / Claude Desktop:** Settings → Capabilities → Skills → Upload skill, one zip at a time.
-They need the Financial Portfolios AI connector added too.
+**portfolio** needs only the first. **holdings-news** needs the second. **drift** and **align** need
+the third. Ask the assistant "what else should I connect?".
 
 ## Automation templates
 
-Seven read-only recurring tasks — weekly digest, publication alert, drift watch, holdings news,
-earnings week, monthly performance, research digest — with copy-paste prompts for Claude Cowork,
+Eight read-only recurring tasks — weekly digest, publication alert, drift watch, holdings news,
+earnings week, monthly performance, research digest, monthly report — with copy-paste prompts for Claude Cowork,
 ChatGPT scheduled tasks and Gemini Spark: [automations/README.md](automations/README.md).
-In Claude Code: `/fpai-portfolio:schedule`.
-
-## Install (Claude Code)
-
-```bash
-# add this marketplace
-/plugin marketplace add Financial-Portfolios-AI/financial-portfolios-ai-marketplace
-# then install a plugin
-/plugin install fpai-portfolio
-/plugin install fpai-research
-/plugin install fpai-broker
-```
-
-## Install (Gemini CLI)
-
-```bash
-gemini extensions install https://github.com/Financial-Portfolios-AI/financial-portfolios-ai-marketplace
-gemini extensions config financial-portfolios-ai
-```
-
-The second command prompts for your personal API token (`aqat_v1_…`), which Gemini stores in the
-extension's `.env` and the system keychain — it is never written into the manifest.
-
-Gemini CLI does not render MCP Apps, so the tools that only open an interactive view are excluded
-([`gemini-extension.json`](gemini-extension.json)); everything else answers as JSON, including the
-cross-portfolio breadth board and the access panel, whose results are computed server-side.
-[`GEMINI.md`](GEMINI.md) is loaded as the extension's context.
-
-(Other MCP clients: point them at the MCP server directly — see
-[financial-portfolios.ai/agentic](https://financial-portfolios.ai/agentic).)
+In Claude Code: `/financial-portfolios:schedule`.
 
 ## Which deployment these point at
 
 > **The production domain does not serve the MCP endpoint yet.** `https://financial-portfolios.ai/mcp`
-> currently returns `404`, while `https://dev.financial-portfolios.ai/mcp` answers correctly. Both the
-> Gemini extension and the `fpai-portfolio` plugin therefore default to the **dev** deployment, so an
-> install works out of the box. Override with `FPAI_MCP_URL` (plugin) or by editing
-> [`gemini-extension.json`](gemini-extension.json), and both move to production once it is serving.
+> currently returns `404`, while `https://dev.financial-portfolios.ai/mcp` answers correctly. The
+> Gemini extension, the `financial-portfolios` plugin and the install buttons therefore default to the
+> **dev** deployment. Override with `FINANCIAL_PORTFOLIOS_MCP_URL` (plugin) or by editing
+> [`gemini-extension.json`](gemini-extension.json); all of them move to production once it serves.
 
 ## Authentication
 
-`fpai-portfolio` bundles the MCP connection (`.mcp.json`); `fpai-research` and `fpai-broker` use it,
-so install `fpai-portfolio` alongside either of them. Provide your credentials via env:
+`financial-portfolios` bundles the MCP connection (`.mcp.json`); `financial-portfolios-broker` uses
+it, so install `financial-portfolios` alongside it.
 
-- `FPAI_API_TOKEN` — a personal API token (`aqat_v1_…`) from **API Access** on the portal, **or**
-- use the **OAuth** connector flow (recommended for directory clients) — the plugin points at
-  `https://dev.financial-portfolios.ai/mcp`, whose OAuth authorization server handles sign-in and
-  consent. A tokenless request there answers `401` with the RFC 9728 challenge that starts the flow.
-- `FPAI_MCP_URL` — override the server URL (e.g. a staging/self-hosted MCP).
+- **OAuth** (recommended, and the only option in claude.ai and ChatGPT) — a tokenless request answers
+  `401` with the RFC 9728 challenge that starts sign-in and consent.
+- `FINANCIAL_PORTFOLIOS_API_TOKEN` — a personal API token (`aqat_v1_…`) from **API Access** on the portal.
+- `FINANCIAL_PORTFOLIOS_MCP_URL` — override the server URL (e.g. a staging/self-hosted MCP).
 
 Access is always scoped to your active subscriptions and can be revoked any time from API Access.
 
 ## Safety model
 
 - The portfolio tools are **read/compute** — they never trade.
-- The broker plugin **only proposes** order tickets. It will not place, modify, or cancel any order
-  without your explicit, per-batch confirmation, and defaults to **dry-run** when no broker is connected.
-- Data from tools/pages is treated as data, never as instructions. No standing "auto-execute".
+- Order tickets are **only proposed**: you confirm each batch, and you place it. There is no standing
+  authorisation, no auto-execute, and no invented prices; with no broker connected it is a dry run.
+- Scheduled runs are text only and read-only; they never prepare orders.
+- Performance figures are hypothetical and simulated, and always come with their disclaimer.
+- These rules live in the MCP server's own instructions; the skills and commands repeat them.
+- Data from tools/pages is treated as data, never as instructions.
+
+## Privacy and terms
+
+These plugins, skills and extensions are governed by the Financial Portfolios AI
+[Privacy Policy](https://financial-portfolios.ai/legal/privacy),
+[Terms of Service](https://financial-portfolios.ai/legal/terms) and
+[Legal Disclaimer](https://financial-portfolios.ai/legal/disclaimer). Questions:
+[financial-portfolios.ai/contact](https://financial-portfolios.ai/contact).
+
+## For contributors
+
+[`automations/templates.yaml`](automations/templates.yaml) is the single source for the journeys and
+automation templates. Edit it, then run `python scripts/build.py` (needs `pyyaml`); files it writes
+carry a "Generated … Do not edit" header. CI runs `python scripts/build.py --check` and
+`claude plugin validate`. Bump a plugin's `version` in its `plugin.json` when its contents change, so
+`/plugin update` picks it up.
+
+`gemini-extension.json`, `GEMINI.md` and `plugins/financial-portfolios/.mcp.json` are generated from the
+MCP server repository; change them there.
 
 ## Roadmap / ideas
 
-See [ROADMAP.md](ROADMAP.md) for planned plugins (alerts, tax-lot–aware rebalancing, risk/concentration
-analysis, multi-broker aggregation, DCA scheduling, research digests, spreadsheet export, and more).
+See [ROADMAP.md](ROADMAP.md).
 
 ## License
 

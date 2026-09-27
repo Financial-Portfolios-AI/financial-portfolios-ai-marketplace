@@ -5,24 +5,43 @@ posture: surface the model, help the user *prepare* actions, never auto-trade, n
 advice.
 
 ## Analysis & insight
-- **fpai-compare** — compare two portfolios (or a portfolio vs SPY/QQQ) on composition, overlap, sector
+- **compare** — compare two portfolios (or a portfolio vs SPY/QQQ) on composition, overlap, sector
   tilt, and since-inception stats; produce a side-by-side table + chart.
-- **fpai-risk** — concentration (top-N weight, single-name/sector caps), simple factor/style read
+- **risk** — concentration (top-N weight, single-name/sector caps), simple factor/style read
   (size, momentum, sector), and a drawdown/vol summary where price data is available.
-- **fpai-explain** — "why is this name in the book?" using the leadership-signal breakdown (momentum
+- **explain** — "why is this name in the book?" using the leadership-signal breakdown (momentum
   legs, 52-wk-high proximity) once the portal exposes per-stock selection signals (see the portal's
   selection-explainability design). Frame as *signals behind selection*, not advice.
-- **fpai-research-digest** — pull the latest commentary (`list_blog_posts`/`get_blog_post`) and produce a
+- **research-digest** — pull the latest commentary (`list_blog_posts`/`get_blog_post`) and produce a
   weekly digest tied to what changed in the books.
 
 ## Action preparation (still propose → confirm)
-- **fpai-tax** — tax-lot–aware rebalancing: prefer long-term lots, flag wash-sale windows, optional
+- **tax** — tax-lot–aware rebalancing: prefer long-term lots, flag wash-sale windows, optional
   loss-harvesting variant of the order tickets. Informational, US-centric caveats.
-- **fpai-dca** — turn a target book into a dollar-cost-averaging schedule (e.g. N tranches over M weeks)
+- **dca** — turn a target book into a dollar-cost-averaging schedule (e.g. N tranches over M weeks)
   and emit each tranche as reviewable tickets.
-- **fpai-multi-broker** — aggregate positions across several brokerage MCPs, net the deltas once, then
+- **multi-broker** — aggregate positions across several brokerage MCPs, net the deltas once, then
   route per-broker tickets (still per-batch confirmation).
-- **fpai-cash-deploy** — given new cash, propose buys that move toward the model without selling.
+- **cash-deploy** — given new cash, propose buys that move toward the model without selling.
+
+## Reporting
+- **report** (shipped) — deck, PDF, Word, spreadsheet or CSV built with the client's own document tools.
+- **Server-side PDF** — an `export_portfolio_report` MCP tool, so the disclaimer and branding are
+  identical in every client, including those that cannot create files.
+
+## Automation
+- **Publication status** — a cheap `get_publication_status(since)` tool so scheduled checks cost
+  almost nothing, and a publication email/webhook, since every assistant scheduler is timer-only.
+
+## Distribution
+- **Claude directory** — submit the connector and a plugin bundle (needs a privacy policy).
+- **OpenAI Plugin Directory** — one package for ChatGPT and Codex once production serves `/mcp`.
+- **Copilot Studio, Perplexity, Mistral Le Chat** — setup guides for their custom MCP connectors.
+- **Antigravity CLI** — ship a native Antigravity plugin from `build.py` (skills in `.agents/skills/`)
+  instead of relying on `agy plugin import gemini`.
+- **OpenAI** — skills are a submission-time snapshot; submission needs a verified identity, privacy
+  policy, terms, support URL, 5 positive + 3 negative test cases and domain verification.
+- **Eval suite** — `claude plugin eval` cases per journey, safety cases first.
 
 ## Integrations
 - **Market-data / news MCPs** — enrich analysis with quotes, fundamentals, and headlines (read-only).
