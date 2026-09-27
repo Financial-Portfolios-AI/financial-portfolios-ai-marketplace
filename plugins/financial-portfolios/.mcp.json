@@ -4,7 +4,7 @@
       "type": "http",
       "url": "${FINANCIAL_PORTFOLIOS_MCP_URL:-https://dev.financial-portfolios.ai/mcp}",
       "headers": {
-        "X-API-Key": "${FPAI_API_TOKEN}"
+        "X-API-Key": "${FINANCIAL_PORTFOLIOS_API_TOKEN}"
       }
     }
   }

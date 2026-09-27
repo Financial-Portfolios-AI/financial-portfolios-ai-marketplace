@@ -39,10 +39,11 @@ broker orders — all with your data, scoped to your subscription.
 
 > **Renamed.** The `fpai-portfolio`, `fpai-research` and `fpai-broker` plugins are now
 > `financial-portfolios` (portfolio and research merged) and `financial-portfolios-broker`. If you
-> installed the old ones, `/plugin uninstall` each `fpai-*` plugin and install the new names. The
-> plugin's URL override is now `FINANCIAL_PORTFOLIOS_MCP_URL` (was `FPAI_MCP_URL`), and the claude.ai
-> skills are renamed too (`fpai-start` → `portfolio-start`, …): remove the old ones and upload the new
-> zips.
+> installed the old ones, `/plugin uninstall` each `fpai-*` plugin and install the new names. Set
+> `FINANCIAL_PORTFOLIOS_API_TOKEN` instead of `FPAI_API_TOKEN` (the same token variable as the
+> Gemini extension) and `FINANCIAL_PORTFOLIOS_MCP_URL` instead of `FPAI_MCP_URL`. The claude.ai
+> skills are renamed too (`fpai-start` → `portfolio-start`, …): remove the old ones and upload the
+> new zips.
 
 Claude Code shows MCP App panels as text, not as interactive views
 ([anthropics/claude-code#95149](https://github.com/anthropics/claude-code/issues/95149)), so the
@@ -161,7 +162,7 @@ it, so install `financial-portfolios` alongside it.
 
 - **OAuth** (recommended, and the only option in claude.ai and ChatGPT) — a tokenless request answers
   `401` with the RFC 9728 challenge that starts sign-in and consent.
-- `FPAI_API_TOKEN` — a personal API token (`aqat_v1_…`) from **API Access** on the portal.
+- `FINANCIAL_PORTFOLIOS_API_TOKEN` — a personal API token (`aqat_v1_…`) from **API Access** on the portal.
 - `FINANCIAL_PORTFOLIOS_MCP_URL` — override the server URL (e.g. a staging/self-hosted MCP).
 
 Access is always scoped to your active subscriptions and can be revoked any time from API Access.
