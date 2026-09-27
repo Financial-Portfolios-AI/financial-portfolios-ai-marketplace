@@ -243,6 +243,7 @@ def zip_bytes(files: dict[str, str]) -> bytes:
             info = zipfile.ZipInfo(name, ZIP_TIME)
             info.compress_type = zipfile.ZIP_STORED
             info.external_attr = 0o644 << 16
+            info.create_system = 3  # ZipInfo defaults to 0 on Windows and 3 elsewhere
             zf.writestr(info, files[name])
     return buf.getvalue()
 
