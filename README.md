@@ -20,7 +20,7 @@ broker orders — all with your data, scoped to your subscription.
 | [Claude Code](#claude-code) | The plugins in this marketplace | `/financial-portfolios:<journey>` commands |
 | [claude.ai / Claude Desktop](#claudeai-and-claude-desktop) | The connector + the skills in [`dist/`](dist) | Skills in the `/` menu |
 | [ChatGPT](#chatgpt) | The connector | Ask in words (skills later) |
-| [Gemini CLI](#gemini-cli) | The extension | `/financial-portfolios:<journey>` commands |
+| [Gemini CLI / Antigravity CLI](#gemini-cli) | The extension | `/financial-portfolios:<journey>` commands |
 | [Cursor / VS Code](#cursor-and-vs-code) | One-click MCP install | The server's MCP prompts |
 | [Codex and other agents](#other-clients) | The server URL | [`AGENTS.md`](AGENTS.md) |
 
@@ -77,6 +77,11 @@ The second command prompts for your personal API token (`aqat_v1_…`), which Ge
 extension's `.env` and the system keychain — it is never written into the manifest. The journeys
 are commands: `/financial-portfolios:start`, `/financial-portfolios:drift`, and so on
 ([`commands/financial-portfolios`](commands/financial-portfolios)).
+
+> **Antigravity CLI.** Since 18 June 2026 Gemini CLI serves only enterprise, Google Cloud and paid
+> API-key users; free and AI Pro/Ultra users moved to Antigravity CLI. There, import this extension
+> with `agy plugin import gemini`: the commands become skills, the MCP server moves to
+> `mcp_config.json`, and `GEMINI.md` / `AGENTS.md` are read as they are.
 
 Gemini CLI does not render MCP Apps, so the tools that only open an interactive view are excluded
 ([`gemini-extension.json`](gemini-extension.json)); the breadth board and access panel answer as

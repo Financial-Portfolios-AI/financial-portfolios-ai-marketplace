@@ -37,6 +37,10 @@ advice.
 - **Claude directory** — submit the connector and a plugin bundle (needs a privacy policy).
 - **OpenAI Plugin Directory** — one package for ChatGPT and Codex once production serves `/mcp`.
 - **Copilot Studio, Perplexity, Mistral Le Chat** — setup guides for their custom MCP connectors.
+- **Antigravity CLI** — ship a native Antigravity plugin from `build.py` (skills in `.agents/skills/`)
+  instead of relying on `agy plugin import gemini`.
+- **OpenAI** — skills are a submission-time snapshot; submission needs a verified identity, privacy
+  policy, terms, support URL, 5 positive + 3 negative test cases and domain verification.
 - **Eval suite** — `claude plugin eval` cases per journey, safety cases first.
 
 ## Integrations
