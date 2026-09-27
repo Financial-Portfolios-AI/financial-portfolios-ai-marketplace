@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Agentic extensions for Financial Portfolios AI subscribers — interact with your model portfolios, run analysis and visualizations, and prepare broker orders, all from an LLM client via MCP.",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {

@@ -24,6 +24,21 @@ advice.
   route per-broker tickets (still per-batch confirmation).
 - **cash-deploy** — given new cash, propose buys that move toward the model without selling.
 
+## Reporting
+- **report** (shipped) — deck, PDF, Word, spreadsheet or CSV built with the client's own document tools.
+- **Server-side PDF** — an `export_portfolio_report` MCP tool, so the disclaimer and branding are
+  identical in every client, including those that cannot create files.
+
+## Automation
+- **Publication status** — a cheap `get_publication_status(since)` tool so scheduled checks cost
+  almost nothing, and a publication email/webhook, since every assistant scheduler is timer-only.
+
+## Distribution
+- **Claude directory** — submit the connector and a plugin bundle (needs a privacy policy).
+- **OpenAI Plugin Directory** — one package for ChatGPT and Codex once production serves `/mcp`.
+- **Copilot Studio, Perplexity, Mistral Le Chat** — setup guides for their custom MCP connectors.
+- **Eval suite** — `claude plugin eval` cases per journey, safety cases first.
+
 ## Integrations
 - **Market-data / news MCPs** — enrich analysis with quotes, fundamentals, and headlines (read-only).
 - **Spreadsheet / export** — write holdings, changes, and order tickets to CSV / Google Sheets / Excel.

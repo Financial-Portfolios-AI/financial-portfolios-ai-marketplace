@@ -28,6 +28,7 @@ rules: |
 journeys:
   - id: portfolio-start
     journey: start
+    plugin_command: true
     mcp_prompt: start_here
     command: "/financial-portfolios:start"
     panel: open_access_centre
@@ -140,6 +141,43 @@ journeys:
          explicitly before anything is sent. There is no standing authorisation.
       4. Never invent a price, balance or fill. Flag any symbol the broker does not recognise.
 
+  - id: portfolio-report
+    journey: report
+    mcp_prompt: portfolio_report
+    command: "/financial-portfolios:report"
+    plugin_command: true
+    panel: null
+    title: Portfolio report
+    description: >-
+      Build a report on a Financial Portfolios AI model portfolio as a slide deck, PDF, Word
+      document, spreadsheet or CSV: holdings, sectors, changes and published performance. Use when
+      the user asks for a report, deck, PDF, export or spreadsheet of a portfolio.
+    body: |
+      1. Ask which portfolio (or `list_portfolios`) and which format: slides (.pptx), PDF, Word
+         (.docx), spreadsheet (.xlsx) or CSV. Default to PDF.
+      2. Gather, from Financial Portfolios AI only: `get_portfolio_allocation`,
+         `get_portfolio_concentration`, `get_portfolio_changes` (90 days) and
+         `get_portfolio_performance` with `get_portfolio_metrics`.
+      3. Build these sections, in order:
+         - Cover: portfolio name, `as_of` date, and "Delayed public book" if `delayed` is true.
+         - Allocation: top holdings table and an allocation chart; cash.
+         - Sectors and concentration: sector chart, top 5 / top 10, effective N.
+         - What changed: opened, closed, raised, cut, turnover.
+         - Performance: the published figures against the benchmark, then the `disclaimer` in
+           full. If `available` is false, give the `reason` instead.
+         - Only if the user asks: holdings news from their news connector, in its own section,
+           each item attributed to its source.
+         - Notice: informational and educational only; not investment advice; no suitability
+           assessment.
+      4. For a spreadsheet or CSV, write one sheet (or file) per section as plain tables: holdings,
+         sectors, changes, performance statistics, with the `as_of` date and the disclaimer on
+         each sheet.
+      5. Create the file with the client's own document tools (for example the built-in
+         PowerPoint, Word, Excel or PDF skills). If the client cannot create files, give the
+         report as Markdown and say so.
+      6. Put the `as_of` date and "Not investment advice" in the footer of every page or slide.
+         Chart only figures returned by the tools; keep one colour per sector throughout.
+
 # The eighth journey is served by the automation templates below (skill `portfolio-automations`).
 keep_me_posted:
   journey: keep-me-posted
@@ -222,3 +260,14 @@ automations:
       Using Financial Portfolios AI, summarise research posts published in the last 7 days, in two
       lines each, and flag any that mention a ticker held in my portfolios. If there are none, reply
       with one sentence.
+
+  - id: monthly-report
+    title: Monthly portfolio report
+    cadence: First business day of each month at 09:00
+    cron: "0 9 1 * *"
+    needs: []
+    prompt: |
+      Using Financial Portfolios AI, write a report on my portfolio {portfolio} as text: the as-of
+      date, top holdings, sector mix and concentration, what changed in the last month, and the
+      published performance with its disclaimer in full. Calculate no figure yourself, create no
+      files and end with "Not investment advice."

@@ -11,6 +11,7 @@ prepares, stages or places an order.
 - `earnings-week`: Earnings this week, Every Sunday at 18:00 (Financial Portfolios AI + a market-data connector with an earnings calendar)
 - `monthly-performance`: Monthly performance note, First day of each month at 09:00 (Financial Portfolios AI only)
 - `research-digest`: Research digest, Every Thursday at 12:00 (Financial Portfolios AI only)
+- `monthly-report`: Monthly portfolio report, First business day of each month at 09:00 (Financial Portfolios AI only)
 
 1. If the user named a template, use it; otherwise list these and ask which one.
 2. If it needs a portfolio, `list_portfolios` and ask which subscribed one.

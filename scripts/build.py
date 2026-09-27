@@ -66,7 +66,7 @@ def automation_skill(automations: list[dict], rules: str) -> str:
     blocks = "\n\n".join(f"### {a['id']}\n\nCadence: {a['cadence']}\n\n```\n{fill(a['prompt'])}\n```" for a in automations)
     return f"""---
 name: automation-templates
-description: "Predefined, read-only recurring tasks for Financial Portfolios AI (weekly digest, publication alert, drift watch, holdings news, earnings week, monthly performance, research digest). Use when the user wants to automate, schedule or be kept posted about their model portfolios."
+description: "Predefined, read-only recurring tasks for Financial Portfolios AI (weekly digest, publication alert, drift watch, holdings news, earnings week, monthly performance, research digest, monthly report). Use when the user wants to automate, schedule or be kept posted about their model portfolios."
 ---
 
 {GENERATED}
@@ -152,7 +152,7 @@ Every template only reads. None of them prepares or places an order.
 {chr(10).join(sections)}"""
 
 
-def start_command(journey: dict, rules: str) -> str:
+def plugin_command(journey: dict, rules: str) -> str:
     return f"""---
 description: {json.dumps(journey['description'])}
 ---
@@ -263,8 +263,9 @@ def render() -> dict[Path, bytes]:
     out[ROOT / "plugins/financial-portfolios/skills/automation-templates/SKILL.md"] = auto.encode()
     out[ROOT / "plugins/financial-portfolios/commands/schedule.md"] = schedule_command(automations).encode()
     kmp = data["keep_me_posted"]
-    start = next(j for j in journeys if j["journey"] == "start")
-    out[ROOT / "plugins/financial-portfolios/commands/start.md"] = start_command(start, rules).encode()
+    for j in journeys:
+        if j.get("plugin_command"):
+            out[ROOT / "plugins/financial-portfolios/commands" / f"{j['journey']}.md"] = plugin_command(j, rules).encode()
     for j in journeys:
         out[ROOT / "commands" / "financial-portfolios" / f"{j['journey']}.toml"] = gemini_command(j["description"], j["body"], rules).encode()
     out[ROOT / "commands" / "financial-portfolios" / f"{kmp['journey']}.toml"] = gemini_command(

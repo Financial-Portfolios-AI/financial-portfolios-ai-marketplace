@@ -96,3 +96,16 @@ with one sentence.
 ```
 
 Gemini Spark / Muse: start the prompt with "Every Thursday at 12:00, ".
+
+## Monthly portfolio report
+
+**Cadence:** First business day of each month at 09:00 · **Needs:** Financial Portfolios AI only
+
+```
+Using Financial Portfolios AI, write a report on my portfolio [your portfolio, e.g. AQA_BALANCED] as text: the as-of
+date, top holdings, sector mix and concentration, what changed in the last month, and the
+published performance with its disclaimer in full. Calculate no figure yourself, create no
+files and end with "Not investment advice."
+```
+
+Gemini Spark / Muse: start the prompt with "First business day of each month at 09:00, ".

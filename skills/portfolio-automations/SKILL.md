@@ -1,6 +1,6 @@
 ---
 name: portfolio-automations
-description: "Predefined, read-only recurring tasks for Financial Portfolios AI (weekly digest, publication alert, drift watch, holdings news, earnings week, monthly performance, research digest). Use when the user wants to automate, schedule or be kept posted about their model portfolios."
+description: "Predefined, read-only recurring tasks for Financial Portfolios AI (weekly digest, publication alert, drift watch, holdings news, earnings week, monthly performance, research digest, monthly report). Use when the user wants to automate, schedule or be kept posted about their model portfolios."
 ---
 
 <!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->
@@ -19,6 +19,7 @@ a scheduled run never prepares, stages or places an order, whatever the user ask
 | `earnings-week` | Earnings this week | Every Sunday at 18:00 | Financial Portfolios AI + a market-data connector with an earnings calendar |
 | `monthly-performance` | Monthly performance note | First day of each month at 09:00 | Financial Portfolios AI only |
 | `research-digest` | Research digest | Every Thursday at 12:00 | Financial Portfolios AI only |
+| `monthly-report` | Monthly portfolio report | First business day of each month at 09:00 | Financial Portfolios AI only |
 
 ## How to schedule
 
@@ -100,6 +101,17 @@ Cadence: Every Thursday at 12:00
 Using Financial Portfolios AI, summarise research posts published in the last 7 days, in two
 lines each, and flag any that mention a ticker held in my portfolios. If there are none, reply
 with one sentence.
+```
+
+### monthly-report
+
+Cadence: First business day of each month at 09:00
+
+```
+Using Financial Portfolios AI, write a report on my portfolio [your portfolio, e.g. AQA_BALANCED] as text: the as-of
+date, top holdings, sector mix and concentration, what changed in the last month, and the
+published performance with its disclaimer in full. Calculate no figure yourself, create no
+files and end with "Not investment advice."
 ```
 
 ## Always

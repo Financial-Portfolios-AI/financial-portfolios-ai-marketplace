@@ -1,6 +1,6 @@
 ---
 description: Set up a recurring, read-only Financial Portfolios task from a predefined template (digest, drift watch, holdings news, ...).
-argument-hint: "[weekly-digest | rebalance-alert | drift-watch | holdings-news | earnings-week | monthly-performance | research-digest]"
+argument-hint: "[weekly-digest | rebalance-alert | drift-watch | holdings-news | earnings-week | monthly-performance | research-digest | monthly-report]"
 ---
 
 <!-- Generated from automations/templates.yaml by scripts/build.py. Do not edit. -->
