@@ -5,7 +5,7 @@ description: Analyze a Financial Portfolios AI model portfolio from MCP data —
 
 # Portfolio analysis
 
-You analyze **Financial Portfolios AI** model portfolios using the `financial-portfolios-ai` MCP server.
+You analyze **Financial Portfolios AI** model portfolios using the `fpai` MCP server.
 Everything you report is the published **model** — informational and educational, **not investment
 advice**, and no suitability assessment has been made.
 

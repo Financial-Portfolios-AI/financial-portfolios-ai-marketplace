@@ -90,9 +90,9 @@ JSON. [`GEMINI.md`](GEMINI.md) is loaded as the extension's context.
 
 ### Cursor and VS Code
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=financial-portfolios-ai&config=eyJ1cmwiOiJodHRwczovL2Rldi5maW5hbmNpYWwtcG9ydGZvbGlvcy5haS9tY3AifQ%3D%3D)
-[![Add to VS Code](https://img.shields.io/badge/VS_Code-Add_MCP_server-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D)
-[![Add to VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Add_MCP_server-24bfa5?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=financial-portfolios-ai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D&quality=insiders)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=fpai&config=eyJ1cmwiOiJodHRwczovL2Rldi5maW5hbmNpYWwtcG9ydGZvbGlvcy5haS9tY3AifQ%3D%3D)
+[![Add to VS Code](https://img.shields.io/badge/VS_Code-Add_MCP_server-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=fpai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D)
+[![Add to VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Add_MCP_server-24bfa5?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=fpai&config=%7B%22name%22%3A%22financial-portfolios-ai%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//dev.financial-portfolios.ai/mcp%22%7D&quality=insiders)
 
 These add the connector; the journeys are available as the server's MCP prompts.
 

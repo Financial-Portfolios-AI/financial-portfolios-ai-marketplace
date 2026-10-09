@@ -3,7 +3,7 @@ description: Summarize a Financial Portfolios AI model portfolio — holdings, a
 argument-hint: "[portfolio code, e.g. aggressive | balanced | defensive]"
 ---
 
-Using the `financial-portfolios-ai` MCP tools, produce a clear briefing for the portfolio: **$ARGUMENTS** (if empty, first call `list_portfolios` and ask which one, or summarize each).
+Using the `fpai` MCP tools, produce a clear briefing for the portfolio: **$ARGUMENTS** (if empty, first call `list_portfolios` and ask which one, or summarize each).
 
 Do this:
 1. `list_portfolios` to confirm the code and what the subscription includes.
