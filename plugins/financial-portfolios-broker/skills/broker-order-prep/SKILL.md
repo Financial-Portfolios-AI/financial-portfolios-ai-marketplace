@@ -11,7 +11,7 @@ the user reviews and executes.
 
 ## Inputs
 - Live account state from the **broker MCP**, read-only: current positions, cash / buying power, account type. Read this *first* — it is the input to the delta, not a cross-check afterwards.
-- Target deltas from the `financial-portfolios-ai` MCP, computed from those positions. `open_rebalance_studio` (passing the positions) puts them in front of the user to correct before anything is calculated; `rebalance_portfolio` is the direct path when no panel can be rendered.
+- Target deltas from the `fpai` MCP, computed from those positions. `open_rebalance_studio` (passing the positions) puts them in front of the user to correct before anything is calculated; `rebalance_portfolio` is the direct path when no panel can be rendered.
 
 ## Building tickets
 1. **Map symbols** — model tickers → the broker's symbol/contract. Flag any that don't map (delisted, foreign, different class); never silently substitute.

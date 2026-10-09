@@ -3,7 +3,7 @@ description: Compute buy/sell/hold orders to align your holdings with a Financia
 argument-hint: "[portfolio code] [path to your holdings CSV: ticker,quantity]"
 ---
 
-Align the user's current holdings to the model portfolio **$ARGUMENTS** using the `financial-portfolios-ai` MCP.
+Align the user's current holdings to the model portfolio **$ARGUMENTS** using the `fpai` MCP.
 
 Steps:
 1. Get the holdings without making the user retype them. If a brokerage, custodian or portfolio-tracking MCP is connected (SnapTrade, Truthifi, IBKR, …), read the positions from there, read-only. Never ask for brokerage credentials or account numbers.

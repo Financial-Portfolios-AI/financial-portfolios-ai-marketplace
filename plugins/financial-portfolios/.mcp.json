@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "financial-portfolios-ai": {
+    "fpai": {
       "type": "http",
       "url": "${FINANCIAL_PORTFOLIOS_MCP_URL:-https://dev.financial-portfolios.ai/mcp}",
       "headers": {

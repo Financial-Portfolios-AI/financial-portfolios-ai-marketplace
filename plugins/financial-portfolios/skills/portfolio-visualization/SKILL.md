@@ -5,7 +5,7 @@ description: Turn Financial Portfolios AI model-portfolio data into clear visual
 
 # Portfolio visualization
 
-Chart only values the `financial-portfolios-ai` MCP tools return.
+Chart only values the `fpai` MCP tools return.
 
 ## Panels first
 
