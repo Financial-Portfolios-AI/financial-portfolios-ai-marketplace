@@ -1,8 +1,6 @@
 # Financial Portfolios AI
 
-> **Preview.** This extension connects to the **dev** deployment; the production domain does not serve the MCP endpoint yet.
-
-Connects to `https://dev.financial-portfolios.ai/mcp`.
+Connects to `https://financial-portfolios.ai/mcp`.
 
 Systematic, AI-driven model portfolios. This extension connects Gemini CLI to the Financial
 Portfolios AI MCP server so you can inspect published model portfolios, see how they change,
@@ -81,7 +79,7 @@ gemini extensions config financial-portfolios-ai
 ```
 
 It is stored in the extension's `.env` and sent as `X-API-Key`. Generate one at
-<https://dev.financial-portfolios.ai/settings/api-tokens>. Without a token the server answers `401`
+<https://financial-portfolios.ai/api-access>. Without a token the server answers `401`
 and no portfolio is visible.
 
 ---
