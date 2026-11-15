@@ -22,6 +22,9 @@ Requires the Financial Portfolios AI connector.
   advice or a suitability assessment.
 - A portfolio with `delayed: true` is the public book, about 45 days old: give its `as_of` date
   and never present it as current.
-- Performance comes only from `get_portfolio_performance` / `get_portfolio_metrics`; include their
-  `disclaimer` in full and unaltered. Never compute a return from any other source.
+- Performance comes from `get_portfolio_performance` / `get_portfolio_metrics`; include their
+  `disclaimer` in full and unaltered. If the user supplies their own prices and asks for a
+  recalculation, you may work it out from the `get_portfolio_history` weights, held forward between
+  snapshots, but label it as the user's own hypothetical calculation from their data - never the
+  publisher's figure - and say it may differ from the website.
 - Attribute anything taken from another connector (news, prices, positions) to that connector.

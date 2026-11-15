@@ -13,5 +13,5 @@ Report the published performance of **$ARGUMENTS** (if empty, call `list_portfol
 
 Rules:
 - **Show the `disclaimer` field from the response with the figures, in full and unaltered.** These are hypothetical, simulated results computed from published model holdings and total-return prices — not the results of any account. Do not paraphrase that notice or move it somewhere it can be dropped.
-- Never compute a return, gain, drawdown or benchmark comparison yourself, and never from prices obtained elsewhere. A figure derived that way is nobody's published number and will not match the website.
+- If the user supplies their own prices and asks for a recalculation, you may compute it from the `get_portfolio_history` weights (held forward between snapshots) over the dates their prices cover. Label it as the user's own hypothetical calculation from their data - never the publisher's figure - and say it may differ from the published figures and the website. A public (delayed) book gives weights about 45 days old: say the result describes that published book, not the current allocation.
 - Past figures say nothing about what comes next. This is not investment advice.

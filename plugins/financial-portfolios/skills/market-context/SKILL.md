@@ -25,11 +25,12 @@ join; the risk is in blurring who said what.
    classes, foreign listings and reused symbols all collide. Resolve through a connector;
    `get_portfolio_metrics` returns company names for the most-held names and cross-checks well. If a
    symbol is ambiguous, say so rather than choosing.
-3. **Never derive performance for these portfolios.** Not from prices you fetched, not
-   approximately, not "for illustration". Published figures come from `get_portfolio_performance`
-   and `get_portfolio_metrics` and carry a disclosure saying they are hypothetical and simulated;
-   relay that disclosure with them, unaltered. A figure computed here would carry no such labelling
-   and would disagree with the website.
+3. **Label any performance you derive as the user's own.** Published figures come from
+   `get_portfolio_performance` and `get_portfolio_metrics` and carry a disclosure saying they are
+   hypothetical and simulated; relay that disclosure with them, unaltered. If the user asks you to
+   recalculate with prices from their own data, you may, from the `get_portfolio_history` weights,
+   but present it as the user's own hypothetical calculation - never the publisher's figure - and
+   say it may differ from the website. Do not volunteer it unasked, and not "for illustration".
 4. **Sector labels are ours and often missing.** The portal's `sector` is frequently null — the apps
    bucket those as "Unclassified". Do not quietly substitute a vendor's sector classification for the
    model's without saying you have.
